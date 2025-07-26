@@ -61,7 +61,27 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'forest-primary': 'hsl(var(--forest-primary))',
+				'forest-secondary': 'hsl(var(--forest-secondary))',
+				'nature-muted': 'hsl(var(--nature-muted))',
+				'earth-accent': 'hsl(var(--earth-accent))'
+			},
+			spacing: {
+				'header': 'var(--header-height)',
+				'bottom-nav': 'var(--bottom-nav-height)',
+				'touch-target': 'var(--touch-target)'
+			},
+			backgroundImage: {
+				'gradient-forest': 'var(--gradient-forest)',
+				'gradient-nature': 'var(--gradient-nature)'
+			},
+			boxShadow: {
+				'mobile': 'var(--shadow-mobile)',
+				'nav': 'var(--shadow-nav)'
+			},
+			transitionTimingFunction: {
+				'nav': 'var(--transition-nav)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
