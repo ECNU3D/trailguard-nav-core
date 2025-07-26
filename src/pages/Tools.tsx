@@ -49,13 +49,13 @@ const tools = [
 
 const Tools = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">户外工具</h1>
-        <p className="text-muted-foreground">实用的户外探险工具集</p>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">户外工具</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">实用的户外探险工具集</p>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-3 sm:gap-4 lg:gap-6 lg:grid-cols-2">{/* 在大屏幕上使用两列布局 */}
         {tools.map((tool, index) => {
           const Icon = tool.icon;
           return (

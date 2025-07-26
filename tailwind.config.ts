@@ -70,7 +70,13 @@ export default {
 			spacing: {
 				'header': 'var(--header-height)',
 				'bottom-nav': 'var(--bottom-nav-height)',
-				'touch-target': 'var(--touch-target)'
+				'touch-target': 'var(--touch-target)',
+				'container-mobile': 'var(--container-padding-mobile)',
+				'container-tablet': 'var(--container-padding-tablet)',
+				'container-desktop': 'var(--container-padding-desktop)'
+			},
+			maxWidth: {
+				'container': 'var(--max-container-width)'
 			},
 			backgroundImage: {
 				'gradient-forest': 'var(--gradient-forest)',

@@ -17,10 +17,10 @@ import {
 
 const Settings = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">设置</h1>
-        <p className="text-muted-foreground">个性化您的TrailGuard AI体验</p>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">设置</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">个性化您的TrailGuard AI体验</p>
       </div>
 
       {/* 用户信息 */}

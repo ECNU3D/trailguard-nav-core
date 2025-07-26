@@ -40,6 +40,12 @@ All colors MUST be HSL.
     --header-height: 3.5rem;
     --bottom-nav-height: 4rem;
     --touch-target: 2.75rem;
+    
+    /* Responsive spacing */
+    --container-padding-mobile: 1rem;
+    --container-padding-tablet: 1.5rem;
+    --container-padding-desktop: 2rem;
+    --max-container-width: 1200px;
 
     /* TrailGuard AI specific colors */
     --forest-primary: 158 64% 20%;

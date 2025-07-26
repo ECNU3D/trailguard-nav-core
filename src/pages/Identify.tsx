@@ -4,13 +4,13 @@ import { Camera, Upload, Search, Zap } from "lucide-react";
 
 const Identify = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">智能识别</h1>
-        <p className="text-muted-foreground">AI助力快速识别动植物</p>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">智能识别</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">AI助力快速识别动植物</p>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-3 sm:gap-4 lg:gap-6 lg:grid-cols-2">{/* 在大屏幕上使用两列布局 */}
         <Card className="border-forest-primary/20 bg-gradient-nature">
           <CardHeader className="text-center pb-3">
             <div className="mx-auto w-16 h-16 bg-forest-primary rounded-full flex items-center justify-center mb-3">
@@ -48,13 +48,13 @@ const Identify = () => {
         </Card>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-foreground flex items-center">
-          <Zap className="h-5 w-5 mr-2 text-earth-accent" />
+      <div className="space-y-3 sm:space-y-4">
+        <h3 className="text-base sm:text-lg font-semibold text-foreground flex items-center">
+          <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-earth-accent" />
           快速识别功能
         </h3>
         
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">{/* 在大屏幕上使用四列布局 */}
           {[
             { icon: "🌸", name: "花卉识别", desc: "识别野花品种" },
             { icon: "🍄", name: "菌类识别", desc: "区分可食用菌类" },

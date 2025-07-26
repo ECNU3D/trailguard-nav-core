@@ -39,22 +39,22 @@ const guideTopics = [
 
 const Guide = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">户外指南</h1>
-        <p className="text-muted-foreground">探索自然，安全第一</p>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">户外指南</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">探索自然，安全第一</p>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-3 sm:gap-4 lg:gap-6 lg:grid-cols-2">{/* 在大屏幕上使用两列布局 */}
         {guideTopics.map((topic, index) => (
           <Card key={index} className="cursor-pointer hover:shadow-mobile transition-all duration-200 border-border">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 sm:pb-3">
               <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="text-2xl">{topic.icon}</div>
-                  <div>
-                    <CardTitle className="text-lg">{topic.title}</CardTitle>
-                    <CardDescription className="text-sm mt-1">
+                <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                  <div className="text-xl sm:text-2xl flex-shrink-0">{topic.icon}</div>
+                  <div className="min-w-0">
+                    <CardTitle className="text-base sm:text-lg">{topic.title}</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm mt-1">
                       {topic.description}
                     </CardDescription>
                   </div>
@@ -63,19 +63,19 @@ const Guide = () => {
             </CardHeader>
             
             <CardContent className="pt-0">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="flex items-center space-x-3 sm:space-x-4 text-xs text-muted-foreground">
                   <div className="flex items-center space-x-1">
-                    <Clock className="h-3 w-3" />
-                    <span>{topic.duration}</span>
+                    <Clock className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">{topic.duration}</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    <User className="h-3 w-3" />
-                    <span>{topic.difficulty}</span>
+                    <User className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">{topic.difficulty}</span>
                   </div>
                 </div>
                 
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="text-xs self-start sm:self-center flex-shrink-0">
                   {topic.category}
                 </Badge>
               </div>
@@ -84,9 +84,9 @@ const Guide = () => {
         ))}
       </div>
 
-      <div className="bg-gradient-nature rounded-lg p-6 text-center space-y-3">
-        <h3 className="text-lg font-semibold text-foreground">开始你的户外之旅</h3>
-        <p className="text-sm text-muted-foreground">
+      <div className="bg-gradient-nature rounded-lg p-4 sm:p-6 text-center space-y-2 sm:space-y-3">
+        <h3 className="text-base sm:text-lg font-semibold text-foreground">开始你的户外之旅</h3>
+        <p className="text-xs sm:text-sm text-muted-foreground">
           通过AI智能指导，让每次户外探险都更加安全和有趣
         </p>
       </div>
