@@ -1,86 +1,74 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Camera, Upload, Search, Zap } from "lucide-react";
+import { Camera, Upload, Search } from "lucide-react";
+import { useState } from "react";
 
 const Identify = () => {
+  const [isCameraActive, setIsCameraActive] = useState(false);
+
+  const handleScanClick = () => {
+    setIsCameraActive(true);
+    // 这里将来会添加摄像头访问逻辑
+  };
+
+  const handleUploadClick = () => {
+    // 这里将来会添加文件选择逻辑
+  };
+
   return (
-    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-      <div className="text-center space-y-2">
+    <div className="flex flex-col min-h-full">
+      <div className="text-center space-y-2 mb-8 sm:mb-12">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">智能识别</h1>
         <p className="text-sm sm:text-base text-muted-foreground">AI助力快速识别动植物</p>
       </div>
 
-      <div className="grid gap-3 sm:gap-4 lg:gap-6 lg:grid-cols-2">{/* 在大屏幕上使用两列布局 */}
-        <Card className="border-forest-primary/20 bg-gradient-nature">
-          <CardHeader className="text-center pb-3">
-            <div className="mx-auto w-16 h-16 bg-forest-primary rounded-full flex items-center justify-center mb-3">
-              <Camera className="h-8 w-8 text-white" />
+      {/* 相机取景框 overlay */}
+      {isCameraActive && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+          <div className="relative w-80 h-80 border-4 border-white rounded-lg">
+            <div className="absolute inset-0 border-2 border-dashed border-white/60 rounded-lg m-4"></div>
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-white text-sm">
+              将物体置于框内中心位置
             </div>
-            <CardTitle className="text-xl">拍照识别</CardTitle>
-            <CardDescription>
-              拍摄照片，AI立即识别动植物种类
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full bg-forest-primary hover:bg-forest-primary/90 text-white">
-              <Camera className="h-4 w-4 mr-2" />
-              打开相机
+            <Button 
+              variant="outline" 
+              onClick={() => setIsCameraActive(false)}
+              className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 bg-white text-black hover:bg-white/90"
+            >
+              关闭相机
             </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="text-center pb-3">
-            <div className="mx-auto w-16 h-16 bg-forest-secondary rounded-full flex items-center justify-center mb-3">
-              <Upload className="h-8 w-8 text-white" />
-            </div>
-            <CardTitle className="text-xl">上传照片</CardTitle>
-            <CardDescription>
-              从相册选择照片进行识别
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="outline" className="w-full border-forest-secondary text-forest-secondary hover:bg-forest-secondary/10">
-              <Upload className="h-4 w-4 mr-2" />
-              选择照片
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="space-y-3 sm:space-y-4">
-        <h3 className="text-base sm:text-lg font-semibold text-foreground flex items-center">
-          <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-earth-accent" />
-          快速识别功能
-        </h3>
-        
-        <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">{/* 在大屏幕上使用四列布局 */}
-          {[
-            { icon: "🌸", name: "花卉识别", desc: "识别野花品种" },
-            { icon: "🍄", name: "菌类识别", desc: "区分可食用菌类" },
-            { icon: "🦋", name: "昆虫识别", desc: "了解昆虫习性" },
-            { icon: "🐦", name: "鸟类识别", desc: "观鸟爱好者必备" }
-          ].map((item, index) => (
-            <Card key={index} className="p-3 cursor-pointer hover:shadow-mobile transition-all">
-              <div className="text-center space-y-2">
-                <div className="text-2xl">{item.icon}</div>
-                <div>
-                  <div className="font-medium text-sm">{item.name}</div>
-                  <div className="text-xs text-muted-foreground">{item.desc}</div>
-                </div>
-              </div>
-            </Card>
-          ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="bg-muted rounded-lg p-4 space-y-3">
-        <div className="flex items-center space-x-2">
-          <Search className="h-4 w-4 text-forest-primary" />
-          <span className="font-medium text-sm">识别准确率</span>
-        </div>
-        <div className="text-xs text-muted-foreground">
-          基于深度学习技术，我们的AI模型在动植物识别方面达到了95%以上的准确率。
+      {/* 主要内容区域 */}
+      <div className="flex-1 flex flex-col items-center justify-center space-y-6 sm:space-y-8 px-4">
+        {/* 主要扫描按钮 */}
+        <Button 
+          onClick={handleScanClick}
+          className="w-full max-w-sm h-16 sm:h-20 text-lg sm:text-xl font-semibold bg-forest-primary hover:bg-forest-primary/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
+        >
+          <Camera className="h-6 w-6 sm:h-8 sm:w-8 mr-3" />
+          扫描识别
+        </Button>
+
+        {/* 从相册选择链接 */}
+        <button 
+          onClick={handleUploadClick}
+          className="text-forest-primary hover:text-forest-primary/80 underline text-base sm:text-lg font-medium transition-colors"
+        >
+          <Upload className="h-4 w-4 inline mr-2" />
+          从相册选择
+        </button>
+
+        {/* 识别准确率信息 */}
+        <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8">
+          <div className="flex items-center space-x-2 mb-2">
+            <Search className="h-4 w-4 text-forest-primary" />
+            <span className="font-medium text-sm">识别准确率</span>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            基于深度学习技术，我们的AI模型在动植物识别方面达到了95%以上的准确率。
+          </div>
         </div>
       </div>
     </div>
