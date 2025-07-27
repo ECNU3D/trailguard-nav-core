@@ -1,17 +1,82 @@
 import { Button } from "@/components/ui/button";
-import { Camera, Upload, Search } from "lucide-react";
-import { useState } from "react";
+import { Camera, Upload, Search, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { getIdentification } from "@/lib/identification";
+import { useToast } from "@/hooks/use-toast";
 
 const Identify = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleScanClick = () => {
     setIsCameraActive(true);
-    // 这里将来会添加摄像头访问逻辑
+    // 这里将来会添加真实的摄像头访问逻辑
+    // 现在模拟拍照后的识别流程
+  };
+
+  const handleCameraCapture = async () => {
+    setIsCameraActive(false);
+    setIsProcessing(true);
+    
+    try {
+      // 模拟拍照获得的图片数据
+      const mockImageData = "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=400&fit=crop";
+      
+      // 调用识别函数
+      const result = await getIdentification(mockImageData);
+      
+      // 将结果存储到sessionStorage，以便结果页面使用
+      sessionStorage.setItem("identificationResult", JSON.stringify(result));
+      
+      // 导航到结果页面
+      navigate("/identify/result");
+      
+    } catch (error) {
+      console.error("识别失败:", error);
+      toast({
+        title: "识别失败",
+        description: "请重试或选择其他照片",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleUploadClick = () => {
-    // 这里将来会添加文件选择逻辑
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsProcessing(true);
+    
+    try {
+      // 调用识别函数
+      const result = await getIdentification(file);
+      
+      // 将结果存储到sessionStorage，以便结果页面使用
+      sessionStorage.setItem("identificationResult", JSON.stringify(result));
+      
+      // 导航到结果页面
+      navigate("/identify/result");
+      
+    } catch (error) {
+      console.error("识别失败:", error);
+      toast({
+        title: "识别失败",
+        description: "请重试或选择其他照片",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -30,15 +95,42 @@ const Identify = () => {
               将物体置于框内中心位置
             </div>
             <Button 
+              onClick={handleCameraCapture}
+              className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black hover:bg-white/90 mr-4"
+            >
+              拍照识别
+            </Button>
+            <Button 
               variant="outline" 
               onClick={() => setIsCameraActive(false)}
-              className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 bg-white text-black hover:bg-white/90"
+              className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 translate-x-20 bg-transparent border-white text-white hover:bg-white/10"
             >
-              关闭相机
+              取消
             </Button>
           </div>
         </div>
       )}
+
+      {/* 处理中的遮罩层 */}
+      {isProcessing && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 text-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto text-forest-primary" />
+            <div className="text-lg font-medium">AI正在识别中...</div>
+            <div className="text-sm text-muted-foreground">请稍候，这可能需要几秒钟</div>
+          </div>
+        </div>
+      )}
+
+      {/* 隐藏的文件输入 */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={handleFileSelect}
+        className="hidden"
+      />
 
       {/* 主要内容区域 */}
       <div className="flex-1 flex flex-col items-center justify-center space-y-6 sm:space-y-8 px-4">

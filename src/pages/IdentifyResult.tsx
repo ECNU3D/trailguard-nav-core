@@ -3,34 +3,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, AlertTriangle, CheckCircle, Info, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-// 模拟数据 - 将来会从识别API获取
-const mockResult = {
-  userImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=400&fit=crop",
-  bestMatch: {
-    commonName: "野生蘑菇",
-    scientificName: "Amanita phalloides",
-    referenceImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=300&h=300&fit=crop",
-    edibility: "toxic", // "toxic" | "not-edible" | "edible"
-    confidence: 85,
-    guideId: "toxic-mushrooms"
-  },
-  otherMatches: [
-    {
-      name: "白色蘑菇",
-      image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
-      confidence: 72
-    },
-    {
-      name: "野生菌类",
-      image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop", 
-      confidence: 68
-    }
-  ]
-};
+import { useEffect, useState } from "react";
+import { IdentificationResult } from "@/lib/identification";
 
 const IdentifyResult = () => {
   const navigate = useNavigate();
+  const [result, setResult] = useState<IdentificationResult | null>(null);
+
+  useEffect(() => {
+    // 从sessionStorage获取识别结果
+    const storedResult = sessionStorage.getItem("identificationResult");
+    if (storedResult) {
+      setResult(JSON.parse(storedResult));
+    } else {
+      // 如果没有结果数据，返回识别页面
+      navigate("/identify");
+    }
+  }, [navigate]);
+
+  if (!result) {
+    return <div>加载中...</div>;
+  }
 
   const getSafetyBanner = (edibility: string) => {
     switch (edibility) {
@@ -69,7 +62,7 @@ const IdentifyResult = () => {
     }
   };
 
-  const safetyInfo = getSafetyBanner(mockResult.bestMatch.edibility);
+  const safetyInfo = getSafetyBanner(result.bestMatch.edibility);
   const SafetyIcon = safetyInfo.icon;
 
   return (
@@ -97,7 +90,7 @@ const IdentifyResult = () => {
         <CardContent>
           <div className="w-full aspect-square max-w-sm mx-auto rounded-lg overflow-hidden">
             <img 
-              src={mockResult.userImage} 
+              src={result.userImage} 
               alt="用户提交的图片"
               className="w-full h-full object-cover"
             />
@@ -124,7 +117,7 @@ const IdentifyResult = () => {
           <CardTitle className="text-lg flex items-center justify-between">
             最佳匹配
             <Badge variant="secondary">
-              置信度: {mockResult.bestMatch.confidence}%
+              置信度: {result.bestMatch.confidence}%
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -132,16 +125,16 @@ const IdentifyResult = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="w-full sm:w-1/3">
               <img 
-                src={mockResult.bestMatch.referenceImage}
-                alt={mockResult.bestMatch.commonName}
+                src={result.bestMatch.referenceImage}
+                alt={result.bestMatch.commonName}
                 className="w-full aspect-square rounded-lg object-cover"
               />
             </div>
             <div className="flex-1 space-y-2">
-              <h3 className="text-xl font-semibold">{mockResult.bestMatch.commonName}</h3>
-              <p className="text-muted-foreground italic">{mockResult.bestMatch.scientificName}</p>
+              <h3 className="text-xl font-semibold">{result.bestMatch.commonName}</h3>
+              <p className="text-muted-foreground italic">{result.bestMatch.scientificName}</p>
               <Button 
-                onClick={() => navigate(`/guide/${mockResult.bestMatch.guideId}`)}
+                onClick={() => navigate(`/guide/${result.bestMatch.guideId}`)}
                 className="w-full sm:w-auto"
               >
                 <BookOpen className="h-4 w-4 mr-2" />
@@ -159,7 +152,7 @@ const IdentifyResult = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
-            {mockResult.otherMatches.map((match, index) => (
+            {result.otherMatches.map((match, index) => (
               <div key={index} className="flex items-center space-x-3 p-2 rounded-lg border">
                 <img 
                   src={match.image}
