@@ -51,6 +51,36 @@ const Identify = () => {
     fileInputRef.current?.click();
   };
 
+  const handlePreviewExample = () => {
+    // 设置示例识别结果
+    const exampleResult = {
+      userImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=400&fit=crop",
+      bestMatch: {
+        commonName: "死帽菇",
+        scientificName: "Amanita phalloides",
+        referenceImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=300&h=300&fit=crop",
+        edibility: "toxic",
+        confidence: 92,
+        guideId: "toxic-mushrooms"
+      },
+      otherMatches: [
+        {
+          name: "白蘑菇",
+          image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
+          confidence: 78
+        },
+        {
+          name: "野生菌类", 
+          image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
+          confidence: 65
+        }
+      ]
+    };
+    
+    sessionStorage.setItem("identificationResult", JSON.stringify(exampleResult));
+    navigate("/identify/result");
+  };
+
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -151,6 +181,15 @@ const Identify = () => {
           <Upload className="h-4 w-4 inline mr-2" />
           从相册选择
         </button>
+
+        {/* 预览示例按钮 */}
+        <Button 
+          variant="outline"
+          onClick={handlePreviewExample}
+          className="text-sm text-muted-foreground border-muted-foreground/30 hover:bg-muted"
+        >
+          预览识别结果示例
+        </Button>
 
         {/* 识别准确率信息 */}
         <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8">
