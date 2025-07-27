@@ -1,119 +1,209 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Compass, Thermometer, Wind, Sun, Moon, MapPin, Timer, AlertTriangle } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Trash2, Plus, Mountain, Compass, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
-const tools = [
-  {
-    icon: Compass,
-    title: "指南针",
-    description: "数字指南针导航",
-    action: "打开指南针",
-    color: "forest-primary"
-  },
-  {
-    icon: Thermometer,
-    title: "天气检测",
-    description: "实时天气和温度",
-    action: "查看天气",
-    color: "forest-secondary"
-  },
-  {
-    icon: Wind,
-    title: "风速监测",
-    description: "风速和风向信息",
-    action: "检测风速",
-    color: "earth-accent"
-  },
-  {
-    icon: Sun,
-    title: "日出日落",
-    description: "日照时间计算",
-    action: "查看时间",
-    color: "forest-primary"
-  },
-  {
-    icon: MapPin,
-    title: "GPS定位",
-    description: "当前位置坐标",
-    action: "获取位置",
-    color: "forest-secondary"
-  },
-  {
-    icon: Timer,
-    title: "徒步计时",
-    description: "记录行程时间",
-    action: "开始计时",
-    color: "earth-accent"
-  }
-];
+interface ChecklistItem {
+  id: string;
+  text: string;
+  completed: boolean;
+  createdAt: number;
+}
 
 const Tools = () => {
+  const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
+  const [newItem, setNewItem] = useState("");
+  const { toast } = useToast();
+
+  // 从 Local Storage 加载清单
+  useEffect(() => {
+    const savedChecklist = localStorage.getItem("trailguard-checklist");
+    if (savedChecklist) {
+      try {
+        setChecklist(JSON.parse(savedChecklist));
+      } catch (error) {
+        console.error("Failed to load checklist:", error);
+      }
+    }
+  }, []);
+
+  // 保存清单到 Local Storage
+  const saveChecklist = (items: ChecklistItem[]) => {
+    localStorage.setItem("trailguard-checklist", JSON.stringify(items));
+    setChecklist(items);
+  };
+
+  // 添加新项目
+  const addItem = () => {
+    if (!newItem.trim()) {
+      toast({
+        title: "请输入装备名称",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const newChecklistItem: ChecklistItem = {
+      id: Date.now().toString(),
+      text: newItem.trim(),
+      completed: false,
+      createdAt: Date.now()
+    };
+
+    const updatedChecklist = [...checklist, newChecklistItem];
+    saveChecklist(updatedChecklist);
+    setNewItem("");
+    
+    toast({
+      title: "已添加装备",
+      description: newItem.trim(),
+    });
+  };
+
+  // 切换完成状态
+  const toggleItem = (id: string) => {
+    const updatedChecklist = checklist.map(item =>
+      item.id === id ? { ...item, completed: !item.completed } : item
+    );
+    saveChecklist(updatedChecklist);
+  };
+
+  // 删除项目
+  const deleteItem = (id: string) => {
+    const updatedChecklist = checklist.filter(item => item.id !== id);
+    saveChecklist(updatedChecklist);
+    
+    toast({
+      title: "已删除装备",
+    });
+  };
+
+  // 处理回车键添加
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      addItem();
+    }
+  };
+
+  const completedCount = checklist.filter(item => item.completed).length;
+  const totalCount = checklist.length;
+
   return (
     <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">户外工具</h1>
-        <p className="text-sm sm:text-base text-muted-foreground">实用的户外探险工具集</p>
+      <div className="text-center space-y-2 mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">实用工具</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">户外生存必备工具集</p>
       </div>
 
-      <div className="grid gap-3 sm:gap-4 lg:gap-6 lg:grid-cols-2">{/* 在大屏幕上使用两列布局 */}
-        {tools.map((tool, index) => {
-          const Icon = tool.icon;
-          return (
-            <Card key={index} className="cursor-pointer hover:shadow-mobile transition-all duration-200">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-4">
-                  <div className={`w-12 h-12 bg-${tool.color} rounded-lg flex items-center justify-center`}>
-                    <Icon className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-lg">{tool.title}</CardTitle>
-                    <CardDescription className="text-sm">
-                      {tool.description}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="pt-0">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className={`w-full border-${tool.color} text-${tool.color} hover:bg-${tool.color}/10`}
-                >
-                  {tool.action}
-                </Button>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      <Card className="bg-gradient-nature border-border/50">
-        <CardHeader className="text-center pb-3">
-          <div className="mx-auto w-12 h-12 bg-earth-accent rounded-full flex items-center justify-center mb-3">
-            <AlertTriangle className="h-6 w-6 text-white" />
-          </div>
-          <CardTitle className="text-lg">紧急求助</CardTitle>
-          <CardDescription>
-            一键发送位置信息给紧急联系人
-          </CardDescription>
+      {/* 行前装备清单 */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg sm:text-xl flex items-center">
+            <Mountain className="h-5 w-5 mr-2 text-forest-primary" />
+            行前装备清单
+            {totalCount > 0 && (
+              <span className="ml-auto text-sm font-normal text-muted-foreground">
+                {completedCount}/{totalCount} 已完成
+              </span>
+            )}
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <Button className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground">
-            <AlertTriangle className="h-4 w-4 mr-2" />
-            紧急求助
-          </Button>
+        <CardContent className="space-y-4">
+          {/* 添加新装备 */}
+          <div className="flex gap-2">
+            <Input
+              placeholder="输入装备名称..."
+              value={newItem}
+              onChange={(e) => setNewItem(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1"
+            />
+            <Button 
+              onClick={addItem}
+              className="bg-forest-primary hover:bg-forest-primary/90 text-white"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* 清单列表 */}
+          {checklist.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <Mountain className="h-12 w-12 mx-auto mb-3 opacity-50" />
+              <p>还没有添加任何装备</p>
+              <p className="text-sm">开始添加您的户外装备清单吧</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {checklist.map((item) => (
+                <div
+                  key={item.id}
+                  className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
+                    item.completed 
+                      ? "bg-muted/50 border-muted" 
+                      : "bg-background border-border hover:bg-muted/30"
+                  }`}
+                >
+                  <Checkbox
+                    checked={item.completed}
+                    onCheckedChange={() => toggleItem(item.id)}
+                  />
+                  <span
+                    className={`flex-1 ${
+                      item.completed 
+                        ? "line-through text-muted-foreground" 
+                        : "text-foreground"
+                    }`}
+                  >
+                    {item.text}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => deleteItem(item.id)}
+                    className="text-muted-foreground hover:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      <div className="bg-muted rounded-lg p-4 space-y-3">
-        <div className="flex items-center space-x-2">
-          <Moon className="h-4 w-4 text-forest-primary" />
-          <span className="font-medium text-sm">离线可用</span>
-        </div>
-        <div className="text-xs text-muted-foreground">
-          大部分工具功能在没有网络连接时也可以正常使用，确保您在野外的安全。
-        </div>
+      {/* 其他工具预览 */}
+      <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
+        <Card className="opacity-60">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center">
+              <Compass className="h-4 w-4 mr-2 text-forest-secondary" />
+              指南针工具
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              基于设备传感器的数字指南针（即将推出）
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="opacity-60">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center">
+              <Heart className="h-4 w-4 mr-2 text-earth-accent" />
+              急救助手
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              步骤式急救指导和紧急联系（即将推出）
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -78,7 +78,7 @@ const IdentifyResult = () => {
       </Button>
 
       {/* 页面标题 */}
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-2 mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">识别结果</h1>
       </div>
 

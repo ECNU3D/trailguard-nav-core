@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Header from "./Header";
 import BottomNav from "./BottomNav";
+import NetworkStatus from "./NetworkStatus";
 
 interface MobileLayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ const MobileLayout = ({ children }: MobileLayoutProps) => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
+      <NetworkStatus />
       
       <main className="flex-1 pt-header pb-bottom-nav overflow-y-auto">
         <div className="w-full max-w-container mx-auto min-h-full">
