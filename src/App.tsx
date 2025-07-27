@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MobileLayout from "./components/layout/MobileLayout";
 import Guide from "./pages/Guide";
 import Identify from "./pages/Identify";
+import IdentifyResult from "./pages/IdentifyResult";
 import Tools from "./pages/Tools";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -22,6 +23,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Guide />} />
             <Route path="/identify" element={<Identify />} />
+            <Route path="/identify/result" element={<IdentifyResult />} />
             <Route path="/tools" element={<Tools />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
