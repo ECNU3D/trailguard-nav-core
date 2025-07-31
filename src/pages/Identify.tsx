@@ -29,7 +29,7 @@ const Identify = () => {
       const mockImageData = "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=400&fit=crop";
       
       // 调用识别函数
-      const result = await getIdentification(mockImageData);
+      const result = await getIdentification(mockImageData, t);
       
       // 将结果存储到sessionStorage，以便结果页面使用
       sessionStorage.setItem("identificationResult", JSON.stringify(result));
@@ -58,7 +58,7 @@ const Identify = () => {
     const exampleResult = {
       userImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=400&fit=crop",
       bestMatch: {
-        commonName: "死帽菇",
+        commonName: t('example.mushroom.death_cap'),
         scientificName: "Amanita phalloides",
         referenceImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=300&h=300&fit=crop",
         edibility: "toxic",
@@ -67,12 +67,12 @@ const Identify = () => {
       },
       otherMatches: [
         {
-          name: "白蘑菇",
+          name: t('example.mushroom.white_mushroom'),
           image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
           confidence: 78
         },
         {
-          name: "野生菌类", 
+          name: t('example.mushroom.wild_mushroom'), 
           image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
           confidence: 65
         }
@@ -91,7 +91,7 @@ const Identify = () => {
     
     try {
       // 调用识别函数
-      const result = await getIdentification(file);
+      const result = await getIdentification(file, t);
       
       // 将结果存储到sessionStorage，以便结果页面使用
       sessionStorage.setItem("identificationResult", JSON.stringify(result));

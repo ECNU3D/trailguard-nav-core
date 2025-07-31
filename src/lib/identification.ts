@@ -16,12 +16,12 @@ export interface IdentificationResult {
   }>;
 }
 
-// 模拟识别数据集
-const mockResults: IdentificationResult[] = [
+// 模拟识别数据集 - 使用翻译键
+const createMockResults = (t: (key: string) => string): IdentificationResult[] => [
   {
     userImage: "",
     bestMatch: {
-      commonName: "牛肝菌",
+      commonName: t('example.mushroom.porcini') || "牛肝菌",
       scientificName: "Boletus edulis",
       referenceImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=300&h=300&fit=crop",
       edibility: "edible",
@@ -30,12 +30,12 @@ const mockResults: IdentificationResult[] = [
     },
     otherMatches: [
       {
-        name: "毒蝇伞",
+        name: t('example.mushroom.fly_agaric') || "毒蝇伞",
         image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
         confidence: 72
       },
       {
-        name: "羊肚菌",
+        name: t('example.mushroom.morel') || "羊肚菌",
         image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
         confidence: 68
       }
@@ -44,7 +44,7 @@ const mockResults: IdentificationResult[] = [
   {
     userImage: "",
     bestMatch: {
-      commonName: "死帽菇",
+      commonName: t('example.mushroom.death_cap'),
       scientificName: "Amanita phalloides",
       referenceImage: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=300&h=300&fit=crop",
       edibility: "toxic",
@@ -53,12 +53,12 @@ const mockResults: IdentificationResult[] = [
     },
     otherMatches: [
       {
-        name: "白蘑菇",
+        name: t('example.mushroom.white_mushroom'),
         image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
         confidence: 78
       },
       {
-        name: "野生菌类",
+        name: t('example.mushroom.wild_mushroom'),
         image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=100&h=100&fit=crop",
         confidence: 65
       }
@@ -67,7 +67,7 @@ const mockResults: IdentificationResult[] = [
   {
     userImage: "",
     bestMatch: {
-      commonName: "野玫瑰",
+      commonName: t('example.plant.wild_rose') || "野玫瑰",
       scientificName: "Rosa canina",
       referenceImage: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=300&h=300&fit=crop",
       edibility: "not-edible",
@@ -76,12 +76,12 @@ const mockResults: IdentificationResult[] = [
     },
     otherMatches: [
       {
-        name: "月季花",
+        name: t('example.plant.rose') || "月季花",
         image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=100&h=100&fit=crop",
         confidence: 69
       },
       {
-        name: "蔷薇",
+        name: t('example.plant.dog_rose') || "蔷薇",
         image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=100&h=100&fit=crop",
         confidence: 64
       }
@@ -92,11 +92,15 @@ const mockResults: IdentificationResult[] = [
 /**
  * 模拟AI识别函数
  * @param imageData 图片数据 (File、Blob或base64字符串)
+ * @param t 翻译函数
  * @returns Promise<IdentificationResult> 识别结果
  */
-export async function getIdentification(imageData: File | Blob | string): Promise<IdentificationResult> {
+export async function getIdentification(imageData: File | Blob | string, t: (key: string) => string): Promise<IdentificationResult> {
   // 模拟2秒的AI处理延迟
   await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  // 获取本地化的模拟结果
+  const mockResults = createMockResults(t);
   
   // 随机选择一个模拟结果
   const randomIndex = Math.floor(Math.random() * mockResults.length);

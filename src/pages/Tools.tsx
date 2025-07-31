@@ -183,12 +183,12 @@ const Tools = () => {
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center">
               <Compass className="h-4 w-4 mr-2 text-forest-secondary" />
-              指南针工具
+              {t('tools.compass.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              基于设备传感器的数字指南针（即将推出）
+              {t('tools.compass.desc')}
             </p>
           </CardContent>
         </Card>
@@ -197,12 +197,12 @@ const Tools = () => {
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center">
               <Heart className="h-4 w-4 mr-2 text-earth-accent" />
-              急救助手
+              {t('tools.emergency.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              步骤式急救指导和紧急联系（即将推出）
+              {t('tools.emergency.desc')}
             </p>
           </CardContent>
         </Card>

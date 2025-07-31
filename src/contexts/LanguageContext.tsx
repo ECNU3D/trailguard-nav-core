@@ -84,6 +84,17 @@ const translations = {
     'tools.compass.title': '指南针',
     'tools.compass.desc': '基础方向导航工具',
     
+    // 示例数据
+    'example.mushroom.death_cap': '死帽菇',
+    'example.mushroom.white_mushroom': '白蘑菇',
+    'example.mushroom.wild_mushroom': '野生蘑菇',
+    'example.mushroom.porcini': '牛肝菌',
+    'example.mushroom.fly_agaric': '毒蝇伞',
+    'example.mushroom.morel': '羊肚菌',
+    'example.plant.wild_rose': '野玫瑰',
+    'example.plant.rose': '月季花',
+    'example.plant.dog_rose': '蔷薇',
+    
     // 设置页面
     'settings.title': '设置',
     'settings.subtitle': '个性化您的TrailGuard AI体验',
@@ -244,6 +255,17 @@ const translations = {
     'tools.weather.desc': 'Get current location weather info',
     'tools.compass.title': 'Compass',
     'tools.compass.desc': 'Basic directional navigation tool',
+    
+    // 示例数据
+    'example.mushroom.death_cap': 'Death Cap',
+    'example.mushroom.white_mushroom': 'White Mushroom', 
+    'example.mushroom.wild_mushroom': 'Wild Mushroom',
+    'example.mushroom.porcini': 'Porcini',
+    'example.mushroom.fly_agaric': 'Fly Agaric',
+    'example.mushroom.morel': 'Morel',
+    'example.plant.wild_rose': 'Wild Rose',
+    'example.plant.rose': 'Rose',
+    'example.plant.dog_rose': 'Dog Rose',
     
     // 设置页面
     'settings.title': 'Settings',
