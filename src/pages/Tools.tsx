@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Plus, Mountain, Compass, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ChecklistItem {
   id: string;
@@ -14,6 +15,7 @@ interface ChecklistItem {
 }
 
 const Tools = () => {
+  const { t } = useLanguage();
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [newItem, setNewItem] = useState("");
   const { toast } = useToast();
@@ -40,7 +42,7 @@ const Tools = () => {
   const addItem = () => {
     if (!newItem.trim()) {
       toast({
-        title: "请输入装备名称",
+        title: t("tools.checklist.placeholder"),
         variant: "destructive",
       });
       return;
@@ -58,7 +60,7 @@ const Tools = () => {
     setNewItem("");
     
     toast({
-      title: "已添加装备",
+      title: t("language") === "zh" ? "已添加装备" : "Equipment Added",
       description: newItem.trim(),
     });
   };
@@ -77,7 +79,7 @@ const Tools = () => {
     saveChecklist(updatedChecklist);
     
     toast({
-      title: "已删除装备",
+      title: t("language") === "zh" ? "已删除装备" : "Equipment Removed",
     });
   };
 
@@ -94,8 +96,8 @@ const Tools = () => {
   return (
     <div className="space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="text-center space-y-2 mb-6 sm:mb-8">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">实用工具</h1>
-        <p className="text-sm sm:text-base text-muted-foreground">户外生存必备工具集</p>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{t("tools.title")}</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">{t("tools.subtitle")}</p>
       </div>
 
       {/* 行前装备清单 */}
@@ -103,10 +105,10 @@ const Tools = () => {
         <CardHeader>
           <CardTitle className="text-lg sm:text-xl flex items-center">
             <Mountain className="h-5 w-5 mr-2 text-forest-primary" />
-            行前装备清单
+            {t("tools.checklist.title")}
             {totalCount > 0 && (
               <span className="ml-auto text-sm font-normal text-muted-foreground">
-                {completedCount}/{totalCount} 已完成
+                {completedCount}/{totalCount} {t("language") === "zh" ? "已完成" : "completed"}
               </span>
             )}
           </CardTitle>
@@ -115,7 +117,7 @@ const Tools = () => {
           {/* 添加新装备 */}
           <div className="flex gap-2">
             <Input
-              placeholder="输入装备名称..."
+              placeholder={t("tools.checklist.placeholder")}
               value={newItem}
               onChange={(e) => setNewItem(e.target.value)}
               onKeyPress={handleKeyPress}
@@ -133,8 +135,8 @@ const Tools = () => {
           {checklist.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Mountain className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>还没有添加任何装备</p>
-              <p className="text-sm">开始添加您的户外装备清单吧</p>
+              <p>{t("tools.checklist.empty")}</p>
+              <p className="text-sm">{t("tools.checklist.empty.desc")}</p>
             </div>
           ) : (
             <div className="space-y-2">

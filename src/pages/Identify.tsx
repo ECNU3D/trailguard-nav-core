@@ -4,8 +4,10 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getIdentification } from "@/lib/identification";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Identify = () => {
+  const { t } = useLanguage();
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -38,8 +40,8 @@ const Identify = () => {
     } catch (error) {
       console.error("识别失败:", error);
       toast({
-        title: "识别失败",
-        description: "请重试或选择其他照片",
+        title: t("identify.error.title"),
+        description: t("identify.error.desc"),
         variant: "destructive",
       });
     } finally {
@@ -100,8 +102,8 @@ const Identify = () => {
     } catch (error) {
       console.error("识别失败:", error);
       toast({
-        title: "识别失败",
-        description: "请重试或选择其他照片",
+        title: t("identify.error.title"),
+        description: t("identify.error.desc"),
         variant: "destructive",
       });
     } finally {
@@ -112,8 +114,8 @@ const Identify = () => {
   return (
     <div className="flex flex-col min-h-full">
       <div className="text-center space-y-2 mb-8 sm:mb-12">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">智能识别</h1>
-        <p className="text-sm sm:text-base text-muted-foreground">AI助力快速识别动植物</p>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{t("identify.title")}</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">{t("identify.subtitle")}</p>
       </div>
 
       {/* 相机取景框 overlay */}
@@ -122,20 +124,20 @@ const Identify = () => {
           <div className="relative w-80 h-80 border-4 border-white rounded-lg">
             <div className="absolute inset-0 border-2 border-dashed border-white/60 rounded-lg m-4"></div>
             <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-white text-sm">
-              将物体置于框内中心位置
+              {t("identify.camera.instruction")}
             </div>
             <Button 
               onClick={handleCameraCapture}
               className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black hover:bg-white/90 mr-4"
             >
-              拍照识别
+              {t("identify.camera.capture")}
             </Button>
             <Button 
               variant="outline" 
               onClick={() => setIsCameraActive(false)}
               className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 translate-x-20 bg-transparent border-white text-white hover:bg-white/10"
             >
-              取消
+              {t("common.cancel")}
             </Button>
           </div>
         </div>
@@ -146,8 +148,8 @@ const Identify = () => {
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
           <div className="bg-white rounded-lg p-6 text-center space-y-4">
             <Loader2 className="h-8 w-8 animate-spin mx-auto text-forest-primary" />
-            <div className="text-lg font-medium">AI正在识别中...</div>
-            <div className="text-sm text-muted-foreground">请稍候，这可能需要几秒钟</div>
+            <div className="text-lg font-medium">{t("identify.processing")}</div>
+            <div className="text-sm text-muted-foreground">{t("identify.processing.desc")}</div>
           </div>
         </div>
       )}
@@ -170,7 +172,7 @@ const Identify = () => {
           className="w-full max-w-sm h-16 sm:h-20 text-lg sm:text-xl font-semibold bg-forest-primary hover:bg-forest-primary/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
           <Camera className="h-6 w-6 sm:h-8 sm:w-8 mr-3" />
-          扫描识别
+          {t("identify.scan")}
         </Button>
 
         {/* 从相册选择链接 */}
@@ -179,7 +181,7 @@ const Identify = () => {
           className="text-forest-primary hover:text-forest-primary/80 underline text-base sm:text-lg font-medium transition-colors"
         >
           <Upload className="h-4 w-4 inline mr-2" />
-          从相册选择
+          {t("identify.upload")}
         </button>
 
         {/* 预览示例按钮 */}
@@ -188,17 +190,17 @@ const Identify = () => {
           onClick={handlePreviewExample}
           className="text-sm text-muted-foreground border-muted-foreground/30 hover:bg-muted"
         >
-          预览识别结果示例
+          {t("identify.preview")}
         </Button>
 
         {/* 识别准确率信息 */}
         <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8">
           <div className="flex items-center space-x-2 mb-2">
             <Search className="h-4 w-4 text-forest-primary" />
-            <span className="font-medium text-sm">识别准确率</span>
+            <span className="font-medium text-sm">{t("identify.accuracy")}</span>
           </div>
           <div className="text-xs text-muted-foreground">
-            基于深度学习技术，我们的AI模型在动植物识别方面达到了95%以上的准确率。
+            {t("identify.accuracy.desc")}
           </div>
         </div>
       </div>

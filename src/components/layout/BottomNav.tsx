@@ -1,35 +1,37 @@
 import { NavLink } from "react-router-dom";
 import { Book, Camera, Wrench, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  {
-    path: "/",
-    label: "指南",
-    icon: Book,
-    id: "guide"
-  },
-  {
-    path: "/identify",
-    label: "识别", 
-    icon: Camera,
-    id: "identify"
-  },
-  {
-    path: "/tools",
-    label: "工具",
-    icon: Wrench,
-    id: "tools"
-  },
-  {
-    path: "/settings",
-    label: "设置",
-    icon: Settings,
-    id: "settings"
-  }
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const BottomNav = () => {
+  const { t } = useLanguage();
+  
+  const navItems = [
+    {
+      path: "/",
+      label: t("nav.guide"),
+      icon: Book,
+      id: "guide"
+    },
+    {
+      path: "/identify",
+      label: t("nav.identify"), 
+      icon: Camera,
+      id: "identify"
+    },
+    {
+      path: "/tools",
+      label: t("nav.tools"),
+      icon: Wrench,
+      id: "tools"
+    },
+    {
+      path: "/settings",
+      label: t("nav.settings"),
+      icon: Settings,
+      id: "settings"
+    }
+  ];
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 h-bottom-nav bg-card/95 backdrop-blur-sm border-t border-border shadow-nav">
       <div className="w-full max-w-container mx-auto h-full">

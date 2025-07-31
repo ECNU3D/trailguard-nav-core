@@ -2,6 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { 
   User, 
   Bell, 
@@ -12,15 +14,17 @@ import {
   ChevronRight,
   Smartphone,
   Wifi,
-  Volume2
+  Volume2,
+  Languages
 } from "lucide-react";
 
 const Settings = () => {
+  const { t, language, setLanguage } = useLanguage();
   return (
     <div className="space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">设置</h1>
-        <p className="text-sm sm:text-base text-muted-foreground">个性化您的TrailGuard AI体验</p>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{t("settings.title")}</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">{t("settings.subtitle")}</p>
       </div>
 
       {/* 用户信息 */}
@@ -31,31 +35,50 @@ const Settings = () => {
               <User className="h-8 w-8 text-white" />
             </div>
             <div>
-              <CardTitle className="text-lg">户外探险者</CardTitle>
-              <CardDescription>加入TrailGuard AI 30天</CardDescription>
+              <CardTitle className="text-lg">{t("settings.profile.title")}</CardTitle>
+              <CardDescription>{t("settings.profile.days")}</CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <Button variant="outline" className="w-full">
             <User className="h-4 w-4 mr-2" />
-            编辑个人资料
+            {t("settings.profile.edit")}
           </Button>
         </CardContent>
       </Card>
 
       {/* 设置选项 */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-foreground">应用设置</h3>
+        <h3 className="text-lg font-semibold text-foreground">{t("settings.app_settings")}</h3>
         
         <Card>
           <CardContent className="p-4 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
+                <Languages className="h-5 w-5 text-forest-primary" />
+                <div>
+                  <div className="font-medium text-sm">{t("settings.language")}</div>
+                  <div className="text-xs text-muted-foreground">{t("settings.language.desc")}</div>
+                </div>
+              </div>
+              <Select value={language} onValueChange={(value: Language) => setLanguage(value)}>
+                <SelectTrigger className="w-24">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="zh">中文</SelectItem>
+                  <SelectItem value="en">English</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
                 <Bell className="h-5 w-5 text-forest-primary" />
                 <div>
-                  <div className="font-medium text-sm">推送通知</div>
-                  <div className="text-xs text-muted-foreground">接收重要提醒和更新</div>
+                  <div className="font-medium text-sm">{t("settings.notifications")}</div>
+                  <div className="text-xs text-muted-foreground">{t("settings.notifications.desc")}</div>
                 </div>
               </div>
               <Switch defaultChecked />
@@ -65,8 +88,8 @@ const Settings = () => {
               <div className="flex items-center space-x-3">
                 <Wifi className="h-5 w-5 text-forest-secondary" />
                 <div>
-                  <div className="font-medium text-sm">离线模式</div>
-                  <div className="text-xs text-muted-foreground">在无网络时保持基本功能</div>
+                  <div className="font-medium text-sm">{t("settings.offline")}</div>
+                  <div className="text-xs text-muted-foreground">{t("settings.offline.desc")}</div>
                 </div>
               </div>
               <Switch defaultChecked />
@@ -76,8 +99,8 @@ const Settings = () => {
               <div className="flex items-center space-x-3">
                 <Volume2 className="h-5 w-5 text-earth-accent" />
                 <div>
-                  <div className="font-medium text-sm">语音提示</div>
-                  <div className="text-xs text-muted-foreground">启用语音导航和提醒</div>
+                  <div className="font-medium text-sm">{t("settings.voice")}</div>
+                  <div className="text-xs text-muted-foreground">{t("settings.voice.desc")}</div>
                 </div>
               </div>
               <Switch />
@@ -88,15 +111,15 @@ const Settings = () => {
 
       {/* 功能入口 */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-foreground">更多功能</h3>
+        <h3 className="text-lg font-semibold text-foreground">{t("settings.more_features")}</h3>
         
         <div className="grid gap-3">
           {[
-            { icon: Download, title: "离线地图", desc: "下载离线地图包", badge: "新功能" },
-            { icon: Shield, title: "隐私设置", desc: "管理数据和隐私选项" },
-            { icon: Smartphone, title: "设备管理", desc: "连接和管理外部设备" },
-            { icon: HelpCircle, title: "帮助中心", desc: "使用指南和常见问题" },
-            { icon: Star, title: "评价应用", desc: "在应用商店给我们评分" }
+            { icon: Download, title: t("settings.offline_maps"), desc: t("settings.offline_maps.desc"), badge: t("settings.new_feature") },
+            { icon: Shield, title: t("settings.privacy"), desc: t("settings.privacy.desc") },
+            { icon: Smartphone, title: t("settings.device"), desc: t("settings.device.desc") },
+            { icon: HelpCircle, title: t("settings.help"), desc: t("settings.help.desc") },
+            { icon: Star, title: t("settings.rate"), desc: t("settings.rate.desc") }
           ].map((item, index) => {
             const Icon = item.icon;
             return (
@@ -128,10 +151,10 @@ const Settings = () => {
 
       {/* 应用信息 */}
       <div className="bg-muted rounded-lg p-4 text-center space-y-2">
-        <div className="text-sm font-medium">TrailGuard AI</div>
-        <div className="text-xs text-muted-foreground">版本 1.0.0</div>
+        <div className="text-sm font-medium">{t("app.title")}</div>
+        <div className="text-xs text-muted-foreground">{t("settings.version")}</div>
         <div className="text-xs text-muted-foreground">
-          专业的户外探险智能助手
+          {t("app.subtitle")}
         </div>
       </div>
     </div>
