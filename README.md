@@ -1,73 +1,85 @@
-# Welcome to your Lovable project
+# TrailGuard Nav Core
 
-## Project info
+This project is the core of the TrailGuard navigation application, built with Vite, React, TypeScript, and shadcn-ui. It's designed to be a cross-platform application using Capacitor to run on Android. This project also leverages Google's Gemma 3n, an on-device large language model, to provide a rich, offline-first user experience.
 
-**URL**: https://lovable.dev/projects/72aadf13-02cb-4f2f-8afe-36573987ce3a
+## Project Structure
 
-## How can I edit this code?
+- `src/`: Contains the main React application code.
+- `android/`: Android project managed by Capacitor.
 
-There are several ways of editing your application.
+## Getting Started
 
-**Use Lovable**
+To get started with this project, you'll need to have Node.js and npm installed.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/72aadf13-02cb-4f2f-8afe-36573987ce3a) and start prompting.
+### Installation
 
-Changes made via Lovable will be committed automatically to this repo.
+1.  **Clone the repository:**
 
-**Use your preferred IDE**
+    ```sh
+    git clone <YOUR_GIT_URL>
+    cd <YOUR_PROJECT_NAME>
+    ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2.  **Install dependencies:**
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+    ```sh
+    npm install
+    ```
 
-Follow these steps:
+3.  **Start the development server:**
+
+    ```sh
+    npm run dev
+    ```
+
+### Building for Production
+
+To create a production build of the web assets, run:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+### Native Platforms
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+To run the application on Android, you'll need to use the Capacitor CLI.
 
-**Use GitHub Codespaces**
+1.  **Sync the web assets with the native projects:**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+    ```sh
+    npx cap sync
+    ```
 
-## What technologies are used for this project?
+2.  **Open the native project in Android Studio:**
 
-This project is built with:
+    ```sh
+    npx cap open android
+    ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+From there, you can build and run the application on a simulator or a physical device.
 
-## How can I deploy this project?
+## Gemma 3n for Offline AI
 
-Simply open [Lovable](https://lovable.dev/projects/72aadf13-02cb-4f2f-8afe-36573987ce3a) and click on Share -> Publish.
+This project uses [Gemma 3n](https://developers.googleblog.com/en/introducing-gemma-3n-developer-guide/), Google's latest on-device large language model, to power its offline features. Gemma 3n is a family of models designed for mobile-first, on-device applications, enabling powerful multimodal capabilities with a small memory footprint.
 
-## Can I connect a custom domain to my Lovable project?
+### Key Features of Gemma 3n in this Project:
 
-Yes, you can!
+*   **On-device processing:** All AI-powered features run directly on the user's device, ensuring privacy and offline availability.
+*   **Multimodal capabilities:** Gemma 3n can understand text, image, audio, and video inputs, opening up possibilities for a wide range of features.
+*   **Efficient performance:** The models are optimized to run efficiently on mobile hardware, providing a smooth user experience.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Development with Gemma 3n
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+When working with Gemma 3n in this project, you'll primarily be interacting with it through the Capacitor bridge. The native Android code handles the model loading and inference, and the results are passed back to the React application.
+
+For more information on the specifics of the Gemma 3n implementation, please refer to the native Android code in the `android/` directory.
+
+## Technologies Used
+
+-   **Vite**: For fast and modern web development.
+-   **React**: For building the user interface.
+-   **TypeScript**: For static typing.
+-   **shadcn-ui**: For UI components.
+-   **Tailwind CSS**: For styling.
+-   **Capacitor**: For building the native Android application.
+-   **Gemma 3n**: Google's on-device LLM for offline AI experiences.
