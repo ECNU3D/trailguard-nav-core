@@ -364,7 +364,16 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('trailguard_language');
-    return (saved as Language) || 'zh';
+    if (saved) {
+      return saved as Language;
+    }
+    
+    // 根据浏览器语言自动设置
+    const browserLang = navigator.language.toLowerCase();
+    if (browserLang.startsWith('zh')) {
+      return 'zh';
+    }
+    return 'en';
   });
 
   const handleSetLanguage = (lang: Language) => {
