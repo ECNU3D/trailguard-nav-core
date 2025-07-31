@@ -63,8 +63,10 @@ const translations = {
     'result.other_matches': '其他可能匹配',
     'result.disclaimer': '识别结果仅供参考，请勿仅凭此结果做出涉及安全的决定。',
     'result.safety.toxic': '剧毒！切勿接触',
-    'result.safety.not_edible': '不可食用',
-    'result.safety.edible': '可安全食用',
+     'result.safety.not_edible': '不可食用',
+     'result.safety.edible': '可安全食用',
+     'result.disclaimer_title': '免责声明',
+     'result.user_photo': '您的照片',
     
     // 工具页面
     'tools.title': '实用工具',
@@ -222,8 +224,10 @@ const translations = {
     'result.other_matches': 'Other Possible Matches',
     'result.disclaimer': 'Identification results are for reference only. Do not make safety decisions based solely on these results.',
     'result.safety.toxic': 'Highly Toxic! Do Not Touch',
-    'result.safety.not_edible': 'Not Edible',
-    'result.safety.edible': 'Safe to Consume',
+     'result.safety.not_edible': 'Not Edible',
+     'result.safety.edible': 'Safe to Consume',
+     'result.disclaimer_title': 'Disclaimer',
+     'result.user_photo': 'Your Photo',
     
     // 工具页面
     'tools.title': 'Utility Tools',

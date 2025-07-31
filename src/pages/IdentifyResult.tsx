@@ -13,12 +13,12 @@ const IdentifyResult = () => {
   const [result, setResult] = useState<IdentificationResult | null>(null);
 
   useEffect(() => {
-    // 从sessionStorage获取识别结果
+    // Get identification result from sessionStorage
     const storedResult = sessionStorage.getItem("identificationResult");
     if (storedResult) {
       setResult(JSON.parse(storedResult));
     } else {
-      // 如果没有结果数据，返回识别页面
+      // If no result data, return to identify page
       navigate("/identify");
     }
   }, [navigate]);
@@ -69,7 +69,7 @@ const IdentifyResult = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* 返回按钮 */}
+      {/* Back button */}
       <Button 
         variant="ghost" 
         onClick={() => navigate("/identify")}
@@ -79,28 +79,28 @@ const IdentifyResult = () => {
         <span>{t('common.back')}</span>
       </Button>
 
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="text-center space-y-2 mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{t('result.title')}</h1>
       </div>
 
-      {/* 用户提交的图片 */}
+      {/* User submitted image */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">{t('identify.upload')}</CardTitle>
+          <CardTitle className="text-lg">{t('result.user_photo')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="w-full aspect-square max-w-sm mx-auto rounded-lg overflow-hidden">
             <img 
               src={result.userImage} 
-              alt={t('identify.upload')}
+              alt={t('result.user_photo')}
               className="w-full h-full object-cover"
             />
           </div>
         </CardContent>
       </Card>
 
-      {/* 安全警告横幅 - 最突出的元素 */}
+      {/* Safety warning banner - most prominent element */}
       <div className={`${safetyInfo.bgColor} ${safetyInfo.textColor} p-4 rounded-lg border-2 border-current shadow-lg`}>
         <div className="flex items-center space-x-3">
           <SafetyIcon className={`h-6 w-6 ${safetyInfo.iconColor} flex-shrink-0`} />
@@ -113,7 +113,7 @@ const IdentifyResult = () => {
         </div>
       </div>
 
-      {/* 最佳匹配结果 */}
+      {/* Best match result */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center justify-between">
@@ -147,7 +147,7 @@ const IdentifyResult = () => {
         </CardContent>
       </Card>
 
-      {/* 其他可能匹配项 */}
+      {/* Other possible matches */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">{t('result.other_matches')}</CardTitle>
@@ -171,10 +171,10 @@ const IdentifyResult = () => {
         </CardContent>
       </Card>
 
-      {/* 免责声明 */}
+      {/* Disclaimer */}
       <div className="bg-muted rounded-lg p-4 text-center">
         <div className="text-sm text-muted-foreground">
-          <strong>{t('common.error')}：</strong>{t('result.disclaimer')}
+          <strong>{t('result.disclaimer_title')}：</strong>{t('result.disclaimer')}
         </div>
       </div>
     </div>
