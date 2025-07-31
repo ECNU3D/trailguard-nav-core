@@ -114,6 +114,61 @@ const translations = {
     // 网络状态
     'network.offline': '您已离线，部分功能受限',
     'network.online': '在线，已同步',
+    
+    // 指南详情页面
+    'guide.detail.back': '返回指南列表',
+    'guide.detail.not_found': '未找到指南内容',
+    'guide.detail.read_time': '阅读时间',
+    'guide.detail.difficulty': '难度',
+    'guide.detail.description': '详细说明',
+    'guide.detail.preparation': '准备工作',
+    'guide.detail.steps': '操作步骤',
+    'guide.detail.precautions': '注意事项',
+    'guide.detail.safety_reminder': '重要提醒',
+    'guide.detail.safety_note': '在执行任何户外生存技能时，安全始终是第一优先级。如果情况超出你的能力范围，请立即寻求专业帮助。',
+    'guide.detail.image_loading': '图片加载中...',
+    'guide.detail.step1': '第一步：观察并评估情况',
+    'guide.detail.step2': '第二步：采取适当的预防措施',
+    'guide.detail.step3': '第三步：执行主要操作',
+    'guide.detail.step4': '第四步：检查结果并进行调整',
+    'guide.detail.prep1': '确保周围环境安全',
+    'guide.detail.prep2': '准备必要的工具和材料',
+    'guide.detail.prep3': '评估当前状况',
+    
+    // 指南列表页面
+    'guide.list.title': '户外生存指南',
+    'guide.list.subtitle': '探索自然，安全第一',
+    'guide.list.search': '搜索指南内容...',
+    'guide.list.no_results': '没有找到相关指南',
+    'guide.list.all': '全部',
+    'guide.list.first_aid': '急救',
+    'guide.list.shelter': '庇护所',
+    'guide.list.plants': '植物',
+    'guide.list.survival': '生存',
+    'guide.list.navigation': '导航',
+    
+    // 指南条目
+    'guide.entries.basic_first_aid': '基础急救处理',
+    'guide.entries.basic_first_aid_desc': '处理外伤、止血和紧急医疗情况的基本方法',
+    'guide.entries.shelter': '搭建临时庇护所',
+    'guide.entries.shelter_desc': '使用自然材料快速搭建可靠的临时避难所',
+    'guide.entries.edible_plants': '可食用野生植物识别',
+    'guide.entries.edible_plants_desc': '识别常见可食用植物，避免有毒物种',
+    'guide.entries.water': '寻找和净化水源',
+    'guide.entries.water_desc': '在野外寻找安全水源并进行基本净化',
+    'guide.entries.navigation': '户外导航基础',
+    'guide.entries.navigation_desc': '使用指南针和自然标志进行方向定位',
+    'guide.entries.fire': '生火技巧',
+    'guide.entries.fire_desc': '在各种天气条件下安全生火的方法',
+    
+    // 级别
+    'guide.level.beginner': '初级',
+    'guide.level.intermediate': '中级',
+    'guide.level.advanced': '高级',
+    
+    // 首页
+    'index.welcome': '欢迎来到您的空白应用',
+    'index.subtitle': '在这里开始构建您的精彩项目！',
   },
   
   en: {
@@ -218,6 +273,61 @@ const translations = {
     // 网络状态
     'network.offline': 'You are offline, some features limited',
     'network.online': 'Online, synchronized',
+    
+    // 指南详情页面
+    'guide.detail.back': 'Back to Guide List',
+    'guide.detail.not_found': 'Guide content not found',
+    'guide.detail.read_time': 'Reading time',
+    'guide.detail.difficulty': 'Difficulty',
+    'guide.detail.description': 'Detailed Description',
+    'guide.detail.preparation': 'Preparation',
+    'guide.detail.steps': 'Steps',
+    'guide.detail.precautions': 'Precautions',
+    'guide.detail.safety_reminder': 'Important Reminder',
+    'guide.detail.safety_note': 'Safety is always the top priority when performing any outdoor survival skills. If the situation exceeds your capabilities, seek professional help immediately.',
+    'guide.detail.image_loading': 'Loading image...',
+    'guide.detail.step1': 'Step 1: Observe and assess the situation',
+    'guide.detail.step2': 'Step 2: Take appropriate precautions',
+    'guide.detail.step3': 'Step 3: Execute main operation',
+    'guide.detail.step4': 'Step 4: Check results and make adjustments',
+    'guide.detail.prep1': 'Ensure surrounding environment is safe',
+    'guide.detail.prep2': 'Prepare necessary tools and materials',
+    'guide.detail.prep3': 'Assess current situation',
+    
+    // 指南列表页面
+    'guide.list.title': 'Outdoor Survival Guide',
+    'guide.list.subtitle': 'Explore nature, safety first',
+    'guide.list.search': 'Search guide content...',
+    'guide.list.no_results': 'No related guides found',
+    'guide.list.all': 'All',
+    'guide.list.first_aid': 'First Aid',
+    'guide.list.shelter': 'Shelter',
+    'guide.list.plants': 'Plants',
+    'guide.list.survival': 'Survival',
+    'guide.list.navigation': 'Navigation',
+    
+    // 指南条目
+    'guide.entries.basic_first_aid': 'Basic First Aid',
+    'guide.entries.basic_first_aid_desc': 'Basic methods for treating wounds, bleeding, and emergency medical situations',
+    'guide.entries.shelter': 'Building Temporary Shelter',
+    'guide.entries.shelter_desc': 'Quickly build reliable temporary shelters using natural materials',
+    'guide.entries.edible_plants': 'Edible Wild Plant Identification',
+    'guide.entries.edible_plants_desc': 'Identify common edible plants and avoid toxic species',
+    'guide.entries.water': 'Finding and Purifying Water',
+    'guide.entries.water_desc': 'Find safe water sources in the wild and perform basic purification',
+    'guide.entries.navigation': 'Outdoor Navigation Basics',
+    'guide.entries.navigation_desc': 'Use compass and natural landmarks for directional positioning',
+    'guide.entries.fire': 'Fire Making Skills',
+    'guide.entries.fire_desc': 'Safe fire making methods in various weather conditions',
+    
+    // 级别
+    'guide.level.beginner': 'Beginner',
+    'guide.level.intermediate': 'Intermediate',
+    'guide.level.advanced': 'Advanced',
+    
+    // 首页
+    'index.welcome': 'Welcome to Your Blank App',
+    'index.subtitle': 'Start building your amazing project here!',
   }
 };
 

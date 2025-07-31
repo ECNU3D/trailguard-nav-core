@@ -5,9 +5,11 @@ import { ArrowLeft, AlertTriangle, CheckCircle, Info, BookOpen } from "lucide-re
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IdentificationResult } from "@/lib/identification";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const IdentifyResult = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [result, setResult] = useState<IdentificationResult | null>(null);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const IdentifyResult = () => {
   }, [navigate]);
 
   if (!result) {
-    return <div>加载中...</div>;
+    return <div>{t('common.loading')}</div>;
   }
 
   const getSafetyBanner = (edibility: string) => {
@@ -30,7 +32,7 @@ const IdentifyResult = () => {
       case "toxic":
         return {
           icon: AlertTriangle,
-          text: "警告：剧毒！切勿触摸或食用！",
+          text: t('result.safety.toxic'),
           bgColor: "bg-red-500",
           textColor: "text-white",
           iconColor: "text-white"
@@ -38,7 +40,7 @@ const IdentifyResult = () => {
       case "not-edible":
         return {
           icon: Info,
-          text: "注意：不可食用。",
+          text: t('result.safety.not_edible'),
           bgColor: "bg-yellow-500",
           textColor: "text-black",
           iconColor: "text-black"
@@ -46,7 +48,7 @@ const IdentifyResult = () => {
       case "edible":
         return {
           icon: CheckCircle,
-          text: "已知可食用 - 但仍需专家确认。",
+          text: t('result.safety.edible'),
           bgColor: "bg-green-500",
           textColor: "text-white",
           iconColor: "text-white"
@@ -54,7 +56,7 @@ const IdentifyResult = () => {
       default:
         return {
           icon: Info,
-          text: "安全性未知 - 请勿食用。",
+          text: t('result.safety.not_edible'),
           bgColor: "bg-gray-500",
           textColor: "text-white",
           iconColor: "text-white"
@@ -74,24 +76,24 @@ const IdentifyResult = () => {
         className="flex items-center space-x-2 p-0 h-auto"
       >
         <ArrowLeft className="h-4 w-4" />
-        <span>返回识别</span>
+        <span>{t('common.back')}</span>
       </Button>
 
       {/* 页面标题 */}
       <div className="text-center space-y-2 mb-6 sm:mb-8">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">识别结果</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{t('result.title')}</h1>
       </div>
 
       {/* 用户提交的图片 */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">您的照片</CardTitle>
+          <CardTitle className="text-lg">{t('identify.upload')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="w-full aspect-square max-w-sm mx-auto rounded-lg overflow-hidden">
             <img 
               src={result.userImage} 
-              alt="用户提交的图片"
+              alt={t('identify.upload')}
               className="w-full h-full object-cover"
             />
           </div>
@@ -105,7 +107,7 @@ const IdentifyResult = () => {
           <div>
             <div className="font-bold text-lg">{safetyInfo.text}</div>
             <div className="text-sm mt-1 opacity-90">
-              仅供参考，请咨询专家确认
+              {t('result.disclaimer')}
             </div>
           </div>
         </div>
@@ -115,9 +117,9 @@ const IdentifyResult = () => {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center justify-between">
-            最佳匹配
+            {t('result.best_match')}
             <Badge variant="secondary">
-              置信度: {result.bestMatch.confidence}%
+              {t('result.confidence')}: {result.bestMatch.confidence}%
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -138,7 +140,7 @@ const IdentifyResult = () => {
                 className="w-full sm:w-auto"
               >
                 <BookOpen className="h-4 w-4 mr-2" />
-                查看详细资料
+                {t('result.view_details')}
               </Button>
             </div>
           </div>
@@ -148,7 +150,7 @@ const IdentifyResult = () => {
       {/* 其他可能匹配项 */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">其他可能的匹配</CardTitle>
+          <CardTitle className="text-lg">{t('result.other_matches')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
@@ -172,8 +174,7 @@ const IdentifyResult = () => {
       {/* 免责声明 */}
       <div className="bg-muted rounded-lg p-4 text-center">
         <div className="text-sm text-muted-foreground">
-          <strong>免责声明：</strong>此识别结果仅供参考。在涉及食用、触摸或任何用途之前，
-          请务必咨询专业人士或权威资料确认。
+          <strong>{t('common.error')}：</strong>{t('result.disclaimer')}
         </div>
       </div>
     </div>
