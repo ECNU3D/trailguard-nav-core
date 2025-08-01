@@ -1,11 +1,40 @@
 # TrailGuard Nav Core
 
-This project is the core of the TrailGuard navigation application, built with Vite, React, TypeScript, and shadcn-ui. It's designed to be a cross-platform application using Capacitor to run on Android. This project also leverages Google's Gemma 3n, an on-device large language model, to provide a rich, offline-first user experience.
+This project is the core of the TrailGuard navigation application, built with Vite, React, TypeScript, and shadcn-ui. It's designed to be a cross-platform application using Capacitor to run on Android. 
+
+**🚀 Now featuring AI-powered object detection using Google's Gemma 3n!**
+
+TrailGuard Nav Core provides **offline plant and mushroom identification** through on-device AI inference, ensuring complete privacy and functionality even without internet connectivity.
 
 ## Project Structure
 
 - `src/`: Contains the main React application code.
 - `android/`: Android project managed by Capacitor.
+
+## 🤖 AI-Powered Object Detection
+
+TrailGuard Nav Core features a revolutionary **offline AI identification system** powered by Google's Gemma 3n model:
+
+### ✨ Key Features
+- **📱 Fully Offline**: No internet required after initial model download
+- **🔍 Smart Identification**: AI-powered plant and mushroom recognition
+- **🛡️ Safety First**: Automatic edibility classification (toxic/not-edible/edible)
+- **⚡ Real-time Processing**: Fast on-device inference using MediaPipe GenAI
+- **📸 Multi-Input**: Camera capture or gallery selection
+- **🎯 High Accuracy**: Confidence scoring and detailed descriptions
+
+### 🧠 How It Works
+1. **Model Download**: First-time setup downloads Gemma 3n model (~2GB)
+2. **Image Capture**: Take photo with camera or select from gallery
+3. **AI Analysis**: On-device processing using MediaPipe GenAI
+4. **Structured Results**: Get species name, edibility, warnings, and detailed description
+5. **Safety Warnings**: AI emphasizes safety with conservative identification
+
+### 🔧 Technical Implementation
+- **Custom Capacitor Plugin**: Native Android plugin for Gemma 3n integration
+- **MediaPipe GenAI**: Google's optimized on-device inference engine
+- **TypeScript Integration**: Fully typed plugin interface
+- **Progressive Enhancement**: Graceful fallbacks and error handling
 
 ## Getting Started
 

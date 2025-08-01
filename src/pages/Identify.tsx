@@ -1,41 +1,108 @@
 import { Button } from "@/components/ui/button";
-import { Camera, Upload, Search, Loader2 } from "lucide-react";
-import { useState, useRef } from "react";
+import { Camera, Upload, Search, Loader2, Download } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getIdentification } from "@/lib/identification";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Camera as CapacitorCamera, CameraResultType, CameraSource } from '@capacitor/camera';
+import GemmaInference from "@/lib/gemma-inference";
 
 const Identify = () => {
   const { t } = useLanguage();
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isModelReady, setIsModelReady] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleScanClick = () => {
-    setIsCameraActive(true);
-    // 这里将来会添加真实的摄像头访问逻辑
-    // 现在模拟拍照后的识别流程
+  // Check model status on component mount
+  useEffect(() => {
+    checkModelStatus();
+  }, []);
+
+  const checkModelStatus = async () => {
+    try {
+      const status = await GemmaInference.isModelReady();
+      setIsModelReady(status.ready);
+      
+      if (!status.ready) {
+        toast({
+          title: t("identify.model.not_ready"),
+          description: t("identify.model.download_required"),
+          variant: "default",
+        });
+      }
+    } catch (error) {
+      console.error("Error checking model status:", error);
+      setIsModelReady(false);
+    }
   };
 
-  const handleCameraCapture = async () => {
-    setIsCameraActive(false);
-    setIsProcessing(true);
-    
+  const handleScanClick = async () => {
+    if (!isModelReady) {
+      toast({
+        title: t("identify.model.not_ready"),
+        description: t("identify.model.download_first"),
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      // 模拟拍照获得的图片数据
-      const mockImageData = "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=400&h=400&fit=crop";
+      setIsProcessing(true);
       
-      // 调用识别函数
-      const result = await getIdentification(mockImageData, t);
+      // Take photo using Capacitor Camera
+      const image = await CapacitorCamera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
+      });
+
+      if (image.webPath) {
+        await performIdentification(image.webPath);
+      }
+    } catch (error) {
+      console.error("Camera error:", error);
+      toast({
+        title: t("identify.camera.error"),
+        description: t("identify.camera.error_desc"),
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const performIdentification = async (imagePath: string) => {
+    try {
+      setIsProcessing(true);
       
-      // 将结果存储到sessionStorage，以便结果页面使用
-      sessionStorage.setItem("identificationResult", JSON.stringify(result));
-      
-      // 导航到结果页面
-      navigate("/identify/result");
+      // Use Gemma AI for identification
+      const aiResult = await GemmaInference.identifyObject({
+        imagePath,
+        prompt: t("identify.ai.prompt"),
+        maxTokens: 512,
+        temperature: 0.7
+      });
+
+      if (aiResult.success && aiResult.result) {
+        // Add the user image to the result
+        const resultWithImage = {
+          ...aiResult.result,
+          userImage: imagePath
+        };
+        
+        // Store result and navigate
+        sessionStorage.setItem("identificationResult", JSON.stringify(resultWithImage));
+        navigate("/identify/result");
+      } else {
+        throw new Error(aiResult.message || "AI identification failed");
+      }
       
     } catch (error) {
       console.error("识别失败:", error);
@@ -87,17 +154,21 @@ const Identify = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    setIsProcessing(true);
-    
+    if (!isModelReady) {
+      toast({
+        title: t("identify.model.not_ready"),
+        description: t("identify.model.download_first"),
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      // 调用识别函数
-      const result = await getIdentification(file, t);
+      setIsProcessing(true);
       
-      // 将结果存储到sessionStorage，以便结果页面使用
-      sessionStorage.setItem("identificationResult", JSON.stringify(result));
-      
-      // 导航到结果页面
-      navigate("/identify/result");
+      // Create a temporary URL for the file
+      const imageUrl = URL.createObjectURL(file);
+      await performIdentification(imageUrl);
       
     } catch (error) {
       console.error("识别失败:", error);
@@ -111,6 +182,54 @@ const Identify = () => {
     }
   };
 
+  const handleDownloadModel = async () => {
+    try {
+      setIsDownloading(true);
+      setDownloadProgress(0);
+      
+      toast({
+        title: t("identify.model.downloading"),
+        description: t("identify.model.please_wait"),
+      });
+
+      // Use a default Gemma 3n model URL (in production, this should be configurable)
+      const modelUrl = "https://storage.googleapis.com/mediapipe-models/llm_inference/gemma-2b-it-gpu-int4/float16/1/gemma-2b-it-gpu-int4.bin";
+      
+      const result = await GemmaInference.downloadModel({ modelUrl });
+      
+      if (result.success) {
+        // Initialize the model after download
+        const initResult = await GemmaInference.initializeModel({ 
+          modelPath: "gemma-2b-it-gpu-int4.bin" 
+        });
+        
+        if (initResult.success) {
+          setIsModelReady(true);
+          toast({
+            title: t("identify.model.ready"),
+            description: t("identify.model.ready_desc"),
+            variant: "default",
+          });
+        } else {
+          throw new Error("Failed to initialize model after download");
+        }
+      } else {
+        throw new Error(result.message || "Download failed");
+      }
+      
+    } catch (error) {
+      console.error("Model download error:", error);
+      toast({
+        title: t("identify.model.download_error"),
+        description: t("identify.model.download_error_desc"),
+        variant: "destructive",
+      });
+    } finally {
+      setIsDownloading(false);
+      setDownloadProgress(0);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-full">
       <div className="text-center space-y-2 mb-8 sm:mb-12">
@@ -118,27 +237,20 @@ const Identify = () => {
         <p className="text-sm sm:text-base text-muted-foreground">{t("identify.subtitle")}</p>
       </div>
 
-      {/* 相机取景框 overlay */}
-      {isCameraActive && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-          <div className="relative w-80 h-80 border-4 border-white rounded-lg">
-            <div className="absolute inset-0 border-2 border-dashed border-white/60 rounded-lg m-4"></div>
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-white text-sm">
-              {t("identify.camera.instruction")}
+      {/* Model download progress */}
+      {isDownloading && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 text-center space-y-4 max-w-sm mx-4">
+            <Download className="h-8 w-8 animate-bounce mx-auto text-forest-primary" />
+            <div className="text-lg font-medium">{t("identify.model.downloading")}</div>
+            <div className="text-sm text-muted-foreground">{t("identify.model.download_progress")}</div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-forest-primary h-2 rounded-full transition-all duration-300" 
+                style={{ width: `${downloadProgress}%` }}
+              ></div>
             </div>
-            <Button 
-              onClick={handleCameraCapture}
-              className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 bg-white text-black hover:bg-white/90 mr-4"
-            >
-              {t("identify.camera.capture")}
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={() => setIsCameraActive(false)}
-              className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 translate-x-20 bg-transparent border-white text-white hover:bg-white/10"
-            >
-              {t("common.cancel")}
-            </Button>
+            <div className="text-xs text-muted-foreground">{downloadProgress}%</div>
           </div>
         </div>
       )}
@@ -166,22 +278,45 @@ const Identify = () => {
 
       {/* 主要内容区域 */}
       <div className="flex-1 flex flex-col items-center justify-center space-y-6 sm:space-y-8 px-4">
+        {/* Model status indicator */}
+        {!isModelReady && (
+          <div className="w-full max-w-sm bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <Download className="h-4 w-4 text-yellow-600" />
+              <span className="font-medium text-sm text-yellow-800">{t("identify.model.not_ready")}</span>
+            </div>
+            <div className="text-xs text-yellow-700 mb-3">
+              {t("identify.model.download_required")}
+            </div>
+            <Button 
+              onClick={handleDownloadModel}
+              disabled={isDownloading}
+              className="w-full bg-yellow-600 hover:bg-yellow-700 text-white text-sm"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              {isDownloading ? t("identify.model.downloading") : t("identify.model.download")}
+            </Button>
+          </div>
+        )}
+
         {/* 主要扫描按钮 */}
         <Button 
           onClick={handleScanClick}
-          className="w-full max-w-sm h-16 sm:h-20 text-lg sm:text-xl font-semibold bg-forest-primary hover:bg-forest-primary/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
+          disabled={!isModelReady || isProcessing || isDownloading}
+          className="w-full max-w-sm h-16 sm:h-20 text-lg sm:text-xl font-semibold bg-forest-primary hover:bg-forest-primary/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Camera className="h-6 w-6 sm:h-8 sm:w-8 mr-3" />
-          {t("identify.scan")}
+          {isModelReady ? t("identify.scan") : t("identify.model.required")}
         </Button>
 
         {/* 从相册选择链接 */}
         <button 
           onClick={handleUploadClick}
-          className="text-forest-primary hover:text-forest-primary/80 underline text-base sm:text-lg font-medium transition-colors"
+          disabled={!isModelReady || isProcessing || isDownloading}
+          className="text-forest-primary hover:text-forest-primary/80 underline text-base sm:text-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
         >
           <Upload className="h-4 w-4 inline mr-2" />
-          {t("identify.upload")}
+          {isModelReady ? t("identify.upload") : t("identify.model.required")}
         </button>
 
         {/* 预览示例按钮 */}
@@ -193,15 +328,21 @@ const Identify = () => {
           {t("identify.preview")}
         </Button>
 
-        {/* 识别准确率信息 */}
+        {/* AI 识别信息 */}
         <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8">
           <div className="flex items-center space-x-2 mb-2">
             <Search className="h-4 w-4 text-forest-primary" />
-            <span className="font-medium text-sm">{t("identify.accuracy")}</span>
+            <span className="font-medium text-sm">{t("identify.ai.powered")}</span>
           </div>
           <div className="text-xs text-muted-foreground">
-            {t("identify.accuracy.desc")}
+            {isModelReady ? t("identify.ai.ready_desc") : t("identify.ai.download_desc")}
           </div>
+          {isModelReady && (
+            <div className="mt-2 flex items-center space-x-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span className="text-xs text-green-600 font-medium">{t("identify.ai.status_ready")}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
