@@ -197,8 +197,8 @@ const Tools = () => {
   // 环境监测功能
   const startEnvironmentScan = () => {
     toast({
-      title: t("language") === "zh" ? "开始环境监测" : "Starting Environment Scan",
-      description: t("language") === "zh" ? "正在使用Gemma 3n分析环境..." : "Analyzing environment with Gemma 3n...",
+      title: t("tools.environment.start_scan"),
+      description: t("tools.environment.scanning"),
     });
     
     // 模拟环境数据更新
@@ -214,8 +214,8 @@ const Tools = () => {
       });
       
       toast({
-        title: t("language") === "zh" ? "环境分析完成" : "Environment Analysis Complete",
-        description: t("language") === "zh" ? "环境数据已更新" : "Environment data updated",
+        title: t("tools.environment.scan_complete"),
+        description: t("tools.environment.data_updated"),
       });
     }, 2000);
   };
@@ -232,11 +232,11 @@ const Tools = () => {
     
     toast({
       title: newActiveState 
-        ? (t("language") === "zh" ? "哨兵模式已开启" : "Sentry Mode Activated")
-        : (t("language") === "zh" ? "哨兵模式已关闭" : "Sentry Mode Deactivated"),
+        ? t("tools.sentry.activated")
+        : t("tools.sentry.deactivated"),
       description: newActiveState 
-        ? (t("language") === "zh" ? "正在使用Gemma 3n监听环境声音..." : "Monitoring environment sounds with Gemma 3n...")
-        : (t("language") === "zh" ? "停止监听" : "Stopped monitoring"),
+        ? t("tools.sentry.monitoring")
+        : t("tools.sentry.stopped"),
     });
 
     if (newActiveState) {
@@ -260,8 +260,8 @@ const Tools = () => {
         
         if (soundLevel > 70) {
           toast({
-            title: t("language") === "zh" ? "⚠️ 高声音警报" : "⚠️ High Sound Alert",
-            description: `${t("language") === "zh" ? "检测到" : "Detected"}: ${randomSound} (${soundLevel}dB)`,
+            title: t("tools.sentry.high_sound_alert"),
+            description: `${t("tools.sentry.detected")}: ${randomSound} (${soundLevel}dB)`,
             variant: "destructive"
           });
         }
@@ -498,12 +498,12 @@ const Tools = () => {
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center">
                   <Camera className="h-4 w-4 mr-2 text-sky-500" />
-                  {t("language") === "zh" ? "环境监测" : "Environment Scan"}
+                  {t("tools.environment.title")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  {t("language") === "zh" ? "利用Gemma 3n分析环境数据" : "Analyze environment data with Gemma 3n"}
+                  {t("tools.environment.desc")}
                 </p>
               </CardContent>
             </Card>
@@ -512,7 +512,7 @@ const Tools = () => {
             <DialogHeader>
               <DialogTitle className="flex items-center">
                 <Video className="h-5 w-5 mr-2 text-sky-500" />
-                {t("language") === "zh" ? "环境监测" : "Environment Monitoring"}
+                {t("tools.environment.title")}
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
@@ -521,28 +521,28 @@ const Tools = () => {
                 <div className="space-y-1">
                   <div className="text-muted-foreground flex items-center">
                     <Thermometer className="h-3 w-3 mr-1" />
-                    {t("language") === "zh" ? "温度" : "Temperature"}
+                    {t("tools.environment.temperature")}
                   </div>
                   <div className="font-mono">{environmentData.temperature}°C</div>
                 </div>
                 <div className="space-y-1">
                   <div className="text-muted-foreground flex items-center">
                     <Wind className="h-3 w-3 mr-1" />
-                    {t("language") === "zh" ? "风速" : "Wind Speed"}
+                    {t("tools.environment.wind_speed")}
                   </div>
                   <div className="font-mono">{environmentData.windSpeed} km/h</div>
                 </div>
                 <div className="space-y-1">
                   <div className="text-muted-foreground flex items-center">
                     <CloudRain className="h-3 w-3 mr-1" />
-                    {t("language") === "zh" ? "湿度" : "Humidity"}
+                    {t("tools.environment.humidity")}
                   </div>
                   <div className="font-mono">{environmentData.humidity}%</div>
                 </div>
                 <div className="space-y-1">
                   <div className="text-muted-foreground flex items-center">
                     <Sun className="h-3 w-3 mr-1" />
-                    UV指数
+                    {t("tools.environment.uv_index")}
                   </div>
                   <div className="font-mono">{environmentData.uvIndex}/11</div>
                 </div>
@@ -550,21 +550,21 @@ const Tools = () => {
 
               {/* 日出日落时间 */}
               <div className="border rounded-lg p-3 space-y-2">
-                <h4 className="text-sm font-medium">{t("language") === "zh" ? "今日日照" : "Today's Sunlight"}</h4>
+                <h4 className="text-sm font-medium">{t("tools.environment.sunlight")}</h4>
                 <div className="flex justify-between text-sm">
-                  <span>{t("language") === "zh" ? "日出" : "Sunrise"}: {environmentData.sunrise}</span>
-                  <span>{t("language") === "zh" ? "日落" : "Sunset"}: {environmentData.sunset}</span>
+                  <span>{t("tools.environment.sunrise")}: {environmentData.sunrise}</span>
+                  <span>{t("tools.environment.sunset")}: {environmentData.sunset}</span>
                 </div>
               </div>
 
               {/* 天气状况 */}
               <div className="border rounded-lg p-3">
-                <h4 className="text-sm font-medium mb-2">{t("language") === "zh" ? "天气预测" : "Weather Forecast"}</h4>
+                <h4 className="text-sm font-medium mb-2">{t("tools.environment.weather_forecast")}</h4>
                 <div className="text-sm text-muted-foreground">
-                  {environmentData.weather === "sunny" && (t("language") === "zh" ? "晴朗" : "Sunny")}
-                  {environmentData.weather === "cloudy" && (t("language") === "zh" ? "阴云" : "Cloudy")}
-                  {environmentData.weather === "partly_cloudy" && (t("language") === "zh" ? "多云" : "Partly Cloudy")}
-                  {environmentData.weather === "rainy" && (t("language") === "zh" ? "有雨" : "Rainy")}
+                  {environmentData.weather === "sunny" && t("tools.environment.weather.sunny")}
+                  {environmentData.weather === "cloudy" && t("tools.environment.weather.cloudy")}
+                  {environmentData.weather === "partly_cloudy" && t("tools.environment.weather.partly_cloudy")}
+                  {environmentData.weather === "rainy" && t("tools.environment.weather.rainy")}
                 </div>
               </div>
               
@@ -573,7 +573,7 @@ const Tools = () => {
                 className="w-full bg-sky-500 hover:bg-sky-600 text-white"
               >
                 <Camera className="h-4 w-4 mr-2" />
-                {t("language") === "zh" ? "开始环境扫描" : "Start Environment Scan"}
+                {t("tools.environment.start_scan")}
               </Button>
             </div>
           </DialogContent>
@@ -586,7 +586,7 @@ const Tools = () => {
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center">
                   <Shield className="h-4 w-4 mr-2 text-amber-500" />
-                  {t("language") === "zh" ? "哨兵模式" : "Sentry Mode"}
+                  {t("tools.sentry.title")}
                   {sentryData.isActive && (
                     <div className="ml-auto w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                   )}
@@ -594,7 +594,7 @@ const Tools = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  {t("language") === "zh" ? "利用Gemma 3n监听环境声音" : "Monitor environment sounds with Gemma 3n"}
+                  {t("tools.sentry.desc")}
                 </p>
               </CardContent>
             </Card>
@@ -603,11 +603,11 @@ const Tools = () => {
             <DialogHeader>
               <DialogTitle className="flex items-center">
                 <Volume2 className="h-5 w-5 mr-2 text-amber-500" />
-                {t("language") === "zh" ? "哨兵模式" : "Sentry Mode"}
+                {t("tools.sentry.title")}
                 {sentryData.isActive && (
                   <div className="ml-auto flex items-center text-sm text-green-600">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2" />
-                    {t("language") === "zh" ? "激活中" : "Active"}
+                    {t("tools.sentry.active")}
                   </div>
                 )}
               </DialogTitle>
@@ -616,26 +616,26 @@ const Tools = () => {
               {/* 威胁等级指示器 */}
               <div className="border rounded-lg p-3">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium">{t("language") === "zh" ? "威胁等级" : "Threat Level"}</span>
+                  <span className="text-sm font-medium">{t("tools.sentry.threat_level")}</span>
                   <span className={`text-xs px-2 py-1 rounded-full ${
                     sentryData.threatLevel === 'high' ? 'bg-red-100 text-red-700' :
                     sentryData.threatLevel === 'medium' ? 'bg-yellow-100 text-yellow-700' :
                     'bg-green-100 text-green-700'
                   }`}>
-                    {sentryData.threatLevel === 'high' && (t("language") === "zh" ? "高" : "High")}
-                    {sentryData.threatLevel === 'medium' && (t("language") === "zh" ? "中" : "Medium")}
-                    {sentryData.threatLevel === 'low' && (t("language") === "zh" ? "低" : "Low")}
+                    {sentryData.threatLevel === 'high' && t("tools.sentry.threat.high")}
+                    {sentryData.threatLevel === 'medium' && t("tools.sentry.threat.medium")}
+                    {sentryData.threatLevel === 'low' && t("tools.sentry.threat.low")}
                   </span>
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  {t("language") === "zh" ? "当前音量" : "Current Volume"}: {sentryData.soundLevel}dB
+                  {t("tools.sentry.current_volume")}: {sentryData.soundLevel}dB
                 </div>
               </div>
 
               {/* 检测到的声音 */}
               {sentryData.detectedSounds.length > 0 && (
                 <div className="border rounded-lg p-3">
-                  <h4 className="text-sm font-medium mb-2">{t("language") === "zh" ? "最近检测" : "Recent Detections"}</h4>
+                  <h4 className="text-sm font-medium mb-2">{t("tools.sentry.recent_detections")}</h4>
                   <div className="space-y-1">
                     {sentryData.detectedSounds.slice(-3).map((sound, index) => (
                       <div key={index} className="text-xs text-muted-foreground">
@@ -657,14 +657,14 @@ const Tools = () => {
               >
                 <Shield className="h-4 w-4 mr-2" />
                 {sentryData.isActive 
-                  ? (t("language") === "zh" ? "停止哨兵模式" : "Stop Sentry Mode")
-                  : (t("language") === "zh" ? "启动哨兵模式" : "Start Sentry Mode")
+                  ? t("tools.sentry.deactivate")
+                  : t("tools.sentry.activate")
                 }
               </Button>
 
               {sentryData.lastAlert && (
                 <div className="text-xs text-muted-foreground text-center">
-                  {t("language") === "zh" ? "最后警报" : "Last Alert"}: {sentryData.lastAlert}
+                  {t("tools.sentry.last_alert")}: {sentryData.lastAlert}
                 </div>
               )}
             </div>
