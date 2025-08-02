@@ -329,7 +329,7 @@ const Identify = () => {
         </Button>
 
         {/* AI 识别信息 */}
-        <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8">
+        <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8 hidden">
           <div className="flex items-center space-x-2 mb-2">
             <Search className="h-4 w-4 text-forest-primary" />
             <span className="font-medium text-sm">{t("identify.ai.powered")}</span>
