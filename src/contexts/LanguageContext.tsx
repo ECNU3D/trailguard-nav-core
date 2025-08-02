@@ -83,6 +83,22 @@ const translations = {
     'tools.weather.desc': '获取当前位置天气信息',
     'tools.compass.title': '指南针',
     'tools.compass.desc': '基础方向导航工具',
+    'tools.compass.heading': '方向',
+    'tools.compass.coordinates': '坐标',
+    'tools.compass.altitude': '海拔',
+    'tools.compass.accuracy': '精度',
+    'tools.compass.calibrate': '校准指南针',
+    'tools.compass.location_error': '无法获取位置信息',
+    
+    // 紧急联系
+    'tools.emergency.add_contact': '添加紧急联系人',
+    'tools.emergency.default_contacts': '默认救援号码',
+    'tools.emergency.share_location': '分享位置',
+    'tools.emergency.location_shared': '位置已分享',
+    'tools.emergency.call': '拨打电话',
+    'tools.emergency.mountain_rescue': '山地救援',
+    'tools.emergency.forest_police': '森林公安',
+    'tools.emergency.medical_emergency': '医疗急救',
     
     // 示例数据
     'example.mushroom.death_cap': '死帽菇',
@@ -255,6 +271,22 @@ const translations = {
     'tools.weather.desc': 'Get current location weather info',
     'tools.compass.title': 'Compass',
     'tools.compass.desc': 'Basic directional navigation tool',
+    'tools.compass.heading': 'Heading',
+    'tools.compass.coordinates': 'Coordinates',
+    'tools.compass.altitude': 'Altitude',
+    'tools.compass.accuracy': 'Accuracy',
+    'tools.compass.calibrate': 'Calibrate Compass',
+    'tools.compass.location_error': 'Unable to get location',
+    
+    // Emergency Contacts
+    'tools.emergency.add_contact': 'Add Emergency Contact',
+    'tools.emergency.default_contacts': 'Default Rescue Numbers',
+    'tools.emergency.share_location': 'Share Location',
+    'tools.emergency.location_shared': 'Location Shared',
+    'tools.emergency.call': 'Call',
+    'tools.emergency.mountain_rescue': 'Mountain Rescue',
+    'tools.emergency.forest_police': 'Forest Police',
+    'tools.emergency.medical_emergency': 'Medical Emergency',
     
     // 示例数据
     'example.mushroom.death_cap': 'Death Cap',
