@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Camera, Upload, Search, Loader2, Download } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Camera, Upload, Search, Loader2, Download, Lightbulb, Eye, Focus, RotateCcw, Clock, Trash2, TrendingUp } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getIdentification } from "@/lib/identification";
@@ -8,6 +9,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Camera as CapacitorCamera, CameraResultType, CameraSource } from '@capacitor/camera';
 import GemmaInference from "@/lib/gemma-inference";
 
+interface HistoryItem {
+  id: string;
+  commonName: string;
+  confidence: number;
+  timestamp: number;
+  image: string;
+}
+
 const Identify = () => {
   const { t } = useLanguage();
   const [isCameraActive, setIsCameraActive] = useState(false);
@@ -15,13 +24,15 @@ const Identify = () => {
   const [isModelReady, setIsModelReady] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
+  const [identificationHistory, setIdentificationHistory] = useState<HistoryItem[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Check model status on component mount
+  // Check model status and load history on component mount
   useEffect(() => {
     checkModelStatus();
+    loadIdentificationHistory();
   }, []);
 
   const checkModelStatus = async () => {
@@ -40,6 +51,54 @@ const Identify = () => {
       console.error("Error checking model status:", error);
       setIsModelReady(false);
     }
+  };
+
+  const loadIdentificationHistory = () => {
+    try {
+      const saved = localStorage.getItem("trailguard-identification-history");
+      if (saved) {
+        const history = JSON.parse(saved);
+        setIdentificationHistory(history.slice(0, 3)); // 只显示最近3条
+      }
+    } catch (error) {
+      console.error("Error loading identification history:", error);
+    }
+  };
+
+  const addToHistory = (result: any, imagePath: string) => {
+    const historyItem: HistoryItem = {
+      id: Date.now().toString(),
+      commonName: result.commonName,
+      confidence: result.confidence,
+      timestamp: Date.now(),
+      image: imagePath
+    };
+
+    const saved = localStorage.getItem("trailguard-identification-history");
+    let history: HistoryItem[] = [];
+    if (saved) {
+      try {
+        history = JSON.parse(saved);
+      } catch (error) {
+        history = [];
+      }
+    }
+
+    // 添加新记录到开头，保留最新的10条
+    history.unshift(historyItem);
+    history = history.slice(0, 10);
+
+    localStorage.setItem("trailguard-identification-history", JSON.stringify(history));
+    setIdentificationHistory(history.slice(0, 3));
+  };
+
+  const clearHistory = () => {
+    localStorage.removeItem("trailguard-identification-history");
+    setIdentificationHistory([]);
+    toast({
+      title: t("identify.history.clear"),
+      description: t("language") === "zh" ? "历史记录已清空" : "History cleared",
+    });
   };
 
   const handleScanClick = async () => {
@@ -96,6 +155,9 @@ const Identify = () => {
           ...aiResult.result,
           userImage: imagePath
         };
+        
+        // Add to history
+        addToHistory(aiResult.result, imagePath);
         
         // Store result and navigate
         sessionStorage.setItem("identificationResult", JSON.stringify(resultWithImage));
@@ -327,6 +389,104 @@ const Identify = () => {
         >
           {t("identify.preview")}
         </Button>
+
+        {/* 识别准确率信息 */}
+        <Card className="w-full max-w-sm">
+          <CardContent className="pt-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <TrendingUp className="h-4 w-4 text-forest-primary" />
+              <span className="font-medium text-sm">{t("identify.accuracy")}</span>
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {t("identify.accuracy.desc")}
+            </div>
+            <div className="mt-2 flex items-center space-x-2">
+              <div className="flex-1 bg-muted rounded-full h-2">
+                <div className="bg-forest-primary h-2 rounded-full" style={{ width: '95%' }}></div>
+              </div>
+              <span className="text-xs font-medium text-forest-primary">95%</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 拍摄技巧卡片 */}
+        <Card className="w-full max-w-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center">
+              <Lightbulb className="h-4 w-4 mr-2 text-amber-500" />
+              {t("identify.tips.title")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="space-y-2">
+              <div className="flex items-start space-x-2">
+                <Eye className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                <div>
+                  <div className="text-xs font-medium">{t("identify.tips.lighting")}</div>
+                  <div className="text-xs text-muted-foreground">{t("identify.tips.lighting.desc")}</div>
+                </div>
+              </div>
+              <div className="flex items-start space-x-2">
+                <Focus className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                <div>
+                  <div className="text-xs font-medium">{t("identify.tips.distance")}</div>
+                  <div className="text-xs text-muted-foreground">{t("identify.tips.distance.desc")}</div>
+                </div>
+              </div>
+              <div className="flex items-start space-x-2">
+                <Search className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                <div>
+                  <div className="text-xs font-medium">{t("identify.tips.focus")}</div>
+                  <div className="text-xs text-muted-foreground">{t("identify.tips.focus.desc")}</div>
+                </div>
+              </div>
+              <div className="flex items-start space-x-2">
+                <RotateCcw className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                <div>
+                  <div className="text-xs font-medium">{t("identify.tips.angle")}</div>
+                  <div className="text-xs text-muted-foreground">{t("identify.tips.angle.desc")}</div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 最近识别历史 */}
+        {identificationHistory.length > 0 && (
+          <Card className="w-full max-w-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center justify-between">
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 mr-2 text-blue-500" />
+                  {t("identify.history.title")}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearHistory}
+                  className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {identificationHistory.map((item) => (
+                <div key={item.id} className="flex items-center space-x-3 p-2 rounded-lg bg-muted/50">
+                  <div className="w-8 h-8 rounded bg-forest-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Search className="h-3 w-3 text-forest-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-medium truncate">{item.commonName}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {item.confidence}% • {new Date(item.timestamp).toLocaleDateString()}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
 
         {/* AI 识别信息 */}
         <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8 hidden">

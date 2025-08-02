@@ -55,6 +55,23 @@ const translations = {
     'identify.error.title': '识别失败',
     'identify.error.desc': '请重试或选择其他照片',
     
+    // 使用技巧
+    'identify.tips.title': '拍摄技巧',
+    'identify.tips.lighting': '确保光线充足',
+    'identify.tips.lighting.desc': '自然光下拍摄效果最佳',
+    'identify.tips.distance': '保持适当距离',
+    'identify.tips.distance.desc': '物体占画面的60-80%',
+    'identify.tips.focus': '对焦清晰',
+    'identify.tips.focus.desc': '避免模糊和抖动',
+    'identify.tips.angle': '多角度拍摄',
+    'identify.tips.angle.desc': '包含关键特征部位',
+    
+    // 最近识别历史
+    'identify.history.title': '最近识别',
+    'identify.history.empty': '暂无识别记录',
+    'identify.history.view_all': '查看全部',
+    'identify.history.clear': '清空历史',
+    
     // 识别结果页面
     'result.title': '识别结果',
     'result.best_match': '最佳匹配',
@@ -282,6 +299,23 @@ const translations = {
     'identify.processing.desc': 'Please wait, this may take a few seconds',
     'identify.error.title': 'Identification Failed',
     'identify.error.desc': 'Please try again or select another photo',
+    
+    // Photography tips
+    'identify.tips.title': 'Photography Tips',
+    'identify.tips.lighting': 'Ensure good lighting',
+    'identify.tips.lighting.desc': 'Natural light works best',
+    'identify.tips.distance': 'Maintain proper distance',
+    'identify.tips.distance.desc': 'Object should occupy 60-80% of frame',
+    'identify.tips.focus': 'Keep in focus',
+    'identify.tips.focus.desc': 'Avoid blur and camera shake',
+    'identify.tips.angle': 'Multiple angles',
+    'identify.tips.angle.desc': 'Include key characteristic features',
+    
+    // Recent identification history
+    'identify.history.title': 'Recent Identifications',
+    'identify.history.empty': 'No identification records',
+    'identify.history.view_all': 'View All',
+    'identify.history.clear': 'Clear History',
     
     // 识别结果页面
     'result.title': 'Identification Result',
