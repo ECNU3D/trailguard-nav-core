@@ -339,121 +339,243 @@ const Identify = () => {
       />
 
       {/* 主要内容区域 */}
-      <div className="flex-1 flex flex-col items-center justify-center space-y-6 sm:space-y-8 px-4">
-        {/* Model status indicator */}
-        {!isModelReady && (
-          <div className="w-full max-w-sm bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-            <div className="flex items-center space-x-2 mb-2">
-              <Download className="h-4 w-4 text-yellow-600" />
-              <span className="font-medium text-sm text-yellow-800">{t("identify.model.not_ready")}</span>
-            </div>
-            <div className="text-xs text-yellow-700 mb-3">
-              {t("identify.model.download_required")}
-            </div>
-            <Button 
-              onClick={handleDownloadModel}
-              disabled={isDownloading}
-              className="w-full bg-yellow-600 hover:bg-yellow-700 text-white text-sm"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              {isDownloading ? t("identify.model.downloading") : t("identify.model.download")}
-            </Button>
-          </div>
-        )}
-
-        {/* 主要扫描按钮 */}
-        <Button 
-          onClick={handleScanClick}
-          disabled={!isModelReady || isProcessing || isDownloading}
-          className="w-full max-w-sm h-16 sm:h-20 text-lg sm:text-xl font-semibold bg-forest-primary hover:bg-forest-primary/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Camera className="h-6 w-6 sm:h-8 sm:w-8 mr-3" />
-          {isModelReady ? t("identify.scan") : t("identify.model.required")}
-        </Button>
-
-        {/* 从相册选择链接 */}
-        <button 
-          onClick={handleUploadClick}
-          disabled={!isModelReady || isProcessing || isDownloading}
-          className="text-forest-primary hover:text-forest-primary/80 underline text-base sm:text-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
-        >
-          <Upload className="h-4 w-4 inline mr-2" />
-          {isModelReady ? t("identify.upload") : t("identify.model.required")}
-        </button>
-
-        {/* 预览示例按钮 */}
-        <Button 
-          variant="outline"
-          onClick={handlePreviewExample}
-          className="text-sm text-muted-foreground border-muted-foreground/30 hover:bg-muted"
-        >
-          {t("identify.preview")}
-        </Button>
-
-        {/* 识别准确率信息 */}
-        <Card className="w-full max-w-sm">
-          <CardContent className="pt-4">
-            <div className="flex items-center space-x-2 mb-2">
-              <TrendingUp className="h-4 w-4 text-forest-primary" />
-              <span className="font-medium text-sm">{t("identify.accuracy")}</span>
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {t("identify.accuracy.desc")}
-            </div>
-            <div className="mt-2 flex items-center space-x-2">
-              <div className="flex-1 bg-muted rounded-full h-2">
-                <div className="bg-forest-primary h-2 rounded-full" style={{ width: '95%' }}></div>
+      <div className="flex-1 flex flex-col lg:flex-row lg:items-start lg:justify-center gap-6 lg:gap-8 px-4 py-6">
+        
+        {/* 左侧：主要功能区 */}
+        <div className="flex flex-col items-center justify-center space-y-6 lg:w-96">
+          {/* Model status indicator */}
+          {!isModelReady && (
+            <div className="w-full max-w-sm bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <Download className="h-4 w-4 text-yellow-600" />
+                <span className="font-medium text-sm text-yellow-800">{t("identify.model.not_ready")}</span>
               </div>
-              <span className="text-xs font-medium text-forest-primary">95%</span>
+              <div className="text-xs text-yellow-700 mb-3">
+                {t("identify.model.download_required")}
+              </div>
+              <Button 
+                onClick={handleDownloadModel}
+                disabled={isDownloading}
+                className="w-full bg-yellow-600 hover:bg-yellow-700 text-white text-sm"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                {isDownloading ? t("identify.model.downloading") : t("identify.model.download")}
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+          )}
 
-        {/* 拍摄技巧卡片 */}
-        <Card className="w-full max-w-sm">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center">
-              <Lightbulb className="h-4 w-4 mr-2 text-amber-500" />
-              {t("identify.tips.title")}
+          {/* 主要扫描按钮 */}
+          <Button 
+            onClick={handleScanClick}
+            disabled={!isModelReady || isProcessing || isDownloading}
+            className="w-full max-w-sm h-20 text-xl font-semibold bg-forest-primary hover:bg-forest-primary/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Camera className="h-8 w-8 mr-3" />
+            {isModelReady ? t("identify.scan") : t("identify.model.required")}
+          </Button>
+
+          {/* 从相册选择链接 */}
+          <button 
+            onClick={handleUploadClick}
+            disabled={!isModelReady || isProcessing || isDownloading}
+            className="text-forest-primary hover:text-forest-primary/80 underline text-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
+          >
+            <Upload className="h-4 w-4 inline mr-2" />
+            {isModelReady ? t("identify.upload") : t("identify.model.required")}
+          </button>
+
+          {/* 预览示例按钮 */}
+          <Button 
+            variant="outline"
+            onClick={handlePreviewExample}
+            className="text-sm text-muted-foreground border-muted-foreground/30 hover:bg-muted"
+          >
+            {t("identify.preview")}
+          </Button>
+
+          {/* 移动端：识别准确率信息 */}
+          <div className="block lg:hidden w-full max-w-sm">
+            <Card>
+              <CardContent className="pt-4">
+                <div className="flex items-center space-x-2 mb-2">
+                  <TrendingUp className="h-4 w-4 text-forest-primary" />
+                  <span className="font-medium text-sm">{t("identify.accuracy")}</span>
+                </div>
+                <div className="text-xs text-muted-foreground mb-2">
+                  {t("identify.accuracy.desc")}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="flex-1 bg-muted rounded-full h-2">
+                    <div className="bg-forest-primary h-2 rounded-full" style={{ width: '95%' }}></div>
+                  </div>
+                  <span className="text-xs font-medium text-forest-primary">95%</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* 右侧：信息卡片区 (仅在大屏显示) */}
+        <div className="hidden lg:flex lg:flex-col lg:w-80 space-y-4">
+          
+          {/* 识别准确率信息 */}
+          <Card>
+            <CardContent className="pt-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <TrendingUp className="h-4 w-4 text-forest-primary" />
+                <span className="font-medium text-sm">{t("identify.accuracy")}</span>
+              </div>
+              <div className="text-xs text-muted-foreground mb-2">
+                {t("identify.accuracy.desc")}
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex-1 bg-muted rounded-full h-2">
+                  <div className="bg-forest-primary h-2 rounded-full" style={{ width: '95%' }}></div>
+                </div>
+                <span className="text-xs font-medium text-forest-primary">95%</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 拍摄技巧卡片 */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center">
+                <Lightbulb className="h-4 w-4 mr-2 text-amber-500" />
+                {t("identify.tips.title")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="space-y-2">
+                <div className="flex items-start space-x-2">
+                  <Eye className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                  <div>
+                    <div className="text-xs font-medium">{t("identify.tips.lighting")}</div>
+                    <div className="text-xs text-muted-foreground">{t("identify.tips.lighting.desc")}</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <Focus className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                  <div>
+                    <div className="text-xs font-medium">{t("identify.tips.distance")}</div>
+                    <div className="text-xs text-muted-foreground">{t("identify.tips.distance.desc")}</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <Search className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                  <div>
+                    <div className="text-xs font-medium">{t("identify.tips.focus")}</div>
+                    <div className="text-xs text-muted-foreground">{t("identify.tips.focus.desc")}</div>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <RotateCcw className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                  <div>
+                    <div className="text-xs font-medium">{t("identify.tips.angle")}</div>
+                    <div className="text-xs text-muted-foreground">{t("identify.tips.angle.desc")}</div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 最近识别历史 */}
+          {identificationHistory.length > 0 && (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Clock className="h-4 w-4 mr-2 text-blue-500" />
+                    {t("identify.history.title")}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearHistory}
+                    className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {identificationHistory.map((item) => (
+                  <div key={item.id} className="flex items-center space-x-3 p-2 rounded-lg bg-muted/50">
+                    <div className="w-8 h-8 rounded bg-forest-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Search className="h-3 w-3 text-forest-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-medium truncate">{item.commonName}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {item.confidence}% • {new Date(item.timestamp).toLocaleDateString()}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+
+      {/* 移动端：底部信息区域 */}
+      <div className="block lg:hidden px-4 pb-6 space-y-4">
+        {/* 拍摄技巧卡片 - 可折叠 */}
+        <Card>
+          <CardHeader className="pb-3 cursor-pointer" onClick={() => {
+            const content = document.getElementById('mobile-tips-content');
+            const isHidden = content?.classList.contains('hidden');
+            if (isHidden) {
+              content?.classList.remove('hidden');
+            } else {
+              content?.classList.add('hidden');
+            }
+          }}>
+            <CardTitle className="text-base flex items-center justify-between">
+              <div className="flex items-center">
+                <Lightbulb className="h-4 w-4 mr-2 text-amber-500" />
+                {t("identify.tips.title")}
+              </div>
+              <div className="text-xs text-muted-foreground">点击展开</div>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="space-y-2">
-              <div className="flex items-start space-x-2">
-                <Eye className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
-                <div>
-                  <div className="text-xs font-medium">{t("identify.tips.lighting")}</div>
-                  <div className="text-xs text-muted-foreground">{t("identify.tips.lighting.desc")}</div>
+          <CardContent id="mobile-tips-content" className="hidden space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <div className="flex items-center space-x-1">
+                  <Eye className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs font-medium">{t("identify.tips.lighting")}</span>
                 </div>
+                <div className="text-xs text-muted-foreground">{t("identify.tips.lighting.desc")}</div>
               </div>
-              <div className="flex items-start space-x-2">
-                <Focus className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
-                <div>
-                  <div className="text-xs font-medium">{t("identify.tips.distance")}</div>
-                  <div className="text-xs text-muted-foreground">{t("identify.tips.distance.desc")}</div>
+              <div className="space-y-1">
+                <div className="flex items-center space-x-1">
+                  <Focus className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs font-medium">{t("identify.tips.distance")}</span>
                 </div>
+                <div className="text-xs text-muted-foreground">{t("identify.tips.distance.desc")}</div>
               </div>
-              <div className="flex items-start space-x-2">
-                <Search className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
-                <div>
-                  <div className="text-xs font-medium">{t("identify.tips.focus")}</div>
-                  <div className="text-xs text-muted-foreground">{t("identify.tips.focus.desc")}</div>
+              <div className="space-y-1">
+                <div className="flex items-center space-x-1">
+                  <Search className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs font-medium">{t("identify.tips.focus")}</span>
                 </div>
+                <div className="text-xs text-muted-foreground">{t("identify.tips.focus.desc")}</div>
               </div>
-              <div className="flex items-start space-x-2">
-                <RotateCcw className="h-3 w-3 mt-0.5 text-muted-foreground flex-shrink-0" />
-                <div>
-                  <div className="text-xs font-medium">{t("identify.tips.angle")}</div>
-                  <div className="text-xs text-muted-foreground">{t("identify.tips.angle.desc")}</div>
+              <div className="space-y-1">
+                <div className="flex items-center space-x-1">
+                  <RotateCcw className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-xs font-medium">{t("identify.tips.angle")}</span>
                 </div>
+                <div className="text-xs text-muted-foreground">{t("identify.tips.angle.desc")}</div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* 最近识别历史 */}
+        {/* 最近识别历史 - 移动端 */}
         {identificationHistory.length > 0 && (
-          <Card className="w-full max-w-sm">
+          <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center justify-between">
                 <div className="flex items-center">
@@ -470,40 +592,42 @@ const Identify = () => {
                 </Button>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
-              {identificationHistory.map((item) => (
-                <div key={item.id} className="flex items-center space-x-3 p-2 rounded-lg bg-muted/50">
-                  <div className="w-8 h-8 rounded bg-forest-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Search className="h-3 w-3 text-forest-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium truncate">{item.commonName}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {item.confidence}% • {new Date(item.timestamp).toLocaleDateString()}
+            <CardContent>
+              <div className="grid grid-cols-1 gap-2">
+                {identificationHistory.slice(0, 2).map((item) => (
+                  <div key={item.id} className="flex items-center space-x-3 p-2 rounded-lg bg-muted/50">
+                    <div className="w-6 h-6 rounded bg-forest-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Search className="h-3 w-3 text-forest-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-medium truncate">{item.commonName}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {item.confidence}% • {new Date(item.timestamp).toLocaleDateString()}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </CardContent>
           </Card>
         )}
+      </div>
 
-        {/* AI 识别信息 */}
-        <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8 hidden">
-          <div className="flex items-center space-x-2 mb-2">
-            <Search className="h-4 w-4 text-forest-primary" />
-            <span className="font-medium text-sm">{t("identify.ai.powered")}</span>
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {isModelReady ? t("identify.ai.ready_desc") : t("identify.ai.download_desc")}
-          </div>
-          {isModelReady && (
-            <div className="mt-2 flex items-center space-x-1">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-xs text-green-600 font-medium">{t("identify.ai.status_ready")}</span>
-            </div>
-          )}
+      {/* AI 识别信息 */}
+      <div className="w-full max-w-sm bg-muted rounded-lg p-4 mt-8 hidden">
+        <div className="flex items-center space-x-2 mb-2">
+          <Search className="h-4 w-4 text-forest-primary" />
+          <span className="font-medium text-sm">{t("identify.ai.powered")}</span>
         </div>
+        <div className="text-xs text-muted-foreground">
+          {isModelReady ? t("identify.ai.ready_desc") : t("identify.ai.download_desc")}
+        </div>
+        {isModelReady && (
+          <div className="mt-2 flex items-center space-x-1">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span className="text-xs text-green-600 font-medium">{t("identify.ai.status_ready")}</span>
+          </div>
+        )}
       </div>
     </div>
   );
